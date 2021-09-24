@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 
-# SIMPLE SCRIPT TO TEST CV_BRIDGE PACKAGE
-#
-#- ON THE RASPI: roslaunch raspicam_node camerav2_1280x960.launch enable_raw:=true
-#
-
 import sys
 import cv2.aruco as aruco
 import numpy as np
@@ -28,7 +23,7 @@ class image_converter:
 	
     def findArucoMarkers(self, img, draw=True):
     	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    	arucoDict = aruco.Dictionary_get(aruco.DICT_6X6_250)
+    	arucoDict = aruco.Dictionary_get(aruco.DICT_5X5_250)
     	arucoParam = aruco.DetectorParameters_create()
     	bboxs, ids, rejected = aruco.detectMarkers(gray, arucoDict, parameters = arucoParam)
     	rospy.loginfo(ids)
