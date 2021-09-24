@@ -19,7 +19,7 @@ class image_converter:
 
     def __init__(self):
         #--- Publisher of the edited frame
-        self.image_pub = rospy.Publisher("image_topic",Image,queue_size=1)
+        #self.image_pub = rospy.Publisher("image_topic",Image,queue_size=1)
 
         #--- Subscriber to the camera flow
         self.bridge = CvBridge()
@@ -32,7 +32,6 @@ class image_converter:
     	arucoParam = aruco.DetectorParameters_create()
     	bboxs, ids, rejected = aruco.detectMarkers(gray, arucoDict, parameters = arucoParam)
     	rospy.loginfo(ids)
-        cv2.putText(img, ids, (100, 150), cv2.FONT_HERSHEY_SIMPLEX, 5, [0,0,200], 5)
     	if draw:
         	aruco.drawDetectedMarkers(img, bboxs) 
     		return [bboxs, ids]
@@ -43,7 +42,7 @@ class image_converter:
     
         #--- Read the frame and convert it using bridge
         try:
-            cv_image = self.bridge.imgmsg_to_cv2(data, desired_encoding='passthrough') #desired_encoding='passthrough'
+            cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
         except CvBridgeError as e:
             print(e)
 
@@ -51,10 +50,8 @@ class image_converter:
         (rows,cols,channels) = cv_image.shape
 
         if cols > 20 and rows > 20:
-            self.findArucoMarkers(cv_image)
-            #--- Circle
-            cv2.circle(cv_image, (500,500), 200, 255)
-            
+            arucofound = self.findArucoMarkers(cv_image)
+            #rospy.loginfo(arucofound)
             #--- Text
             text = "HELLO WORLD"
             cv2.putText(cv_image, text, (100, 150), cv2.FONT_HERSHEY_SIMPLEX, 5, [0,0,200], 5)
@@ -65,10 +62,10 @@ class image_converter:
         cv2.waitKey(3)
 
         #--- Publish the modified frame to a new topic
-        try:
-            self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
-        except CvBridgeError as e:
-            print(e)
+        #try:
+        #    self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
+        #except CvBridgeError as e:
+        #    print(e)
 
 #--------------- MAIN LOOP
 def main(args):
