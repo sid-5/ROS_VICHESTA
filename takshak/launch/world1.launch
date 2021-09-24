@@ -43,5 +43,6 @@
   <node pkg="takshak" name="spawn_marker" type="spawn_marker.py" />
   <!--cv node -->
   <node pkg="takshak" name="cv_node" type="cv.py" />
+  <node pkg="takshak" name="controller1" type="controller1.py" output="screen"/>
 
 </launch>
