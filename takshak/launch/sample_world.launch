@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
   <!-- Gazebo parameters -->
@@ -12,8 +13,10 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find takshak)/worlds/sample_world.world"/>
     <arg name="paused" value="$(arg paused)"/>
+
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="gui" value="$(arg gui)"/>
+
     <arg name="headless" value="$(arg headless)"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
@@ -25,6 +28,7 @@
   <arg name="roll" value="0.0"/>
   <arg name="pitch" value="0.0"/>
   <arg name="yaw" value="-1.57"/>
+
   <param name="robot_description" command="cat '$(find takshak)/models/husky_robot_model/model.urdf'"/>
 
   <node name="husky_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
@@ -37,6 +41,9 @@
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
 
   <!-- Rviz -->
-  <node name="rviz" pkg="rviz" type="rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args=" -d $(find takshak)/rviz/config.rviz"/>
+
+<!--cv node -->
+  <node pkg="takshak" name="cv_node" type="cv.py" />
 
 </launch>
