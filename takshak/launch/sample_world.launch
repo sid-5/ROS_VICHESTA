@@ -44,6 +44,6 @@
   <node name="rviz" pkg="rviz" type="rviz" args=" -d $(find takshak)/rviz/config.rviz"/>
 
 <!--cv node -->
-  <node pkg="takshak" name="cv_node" type="cv.py" />
+  <node pkg="takshak" name="image_converter" type="bridge_test.py" />
 
 </launch>

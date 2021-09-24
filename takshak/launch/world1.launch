@@ -41,5 +41,7 @@
 
   <!-- Spawn aruco markers -->
   <node pkg="takshak" name="spawn_marker" type="spawn_marker.py" />
+  <!--cv node -->
+  <node pkg="takshak" name="cv_node" type="cv.py" />
 
 </launch>
