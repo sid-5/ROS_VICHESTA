@@ -10,11 +10,9 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
 #--- Define our Class
-class image_converter:
+class Aruco:
 
     def __init__(self):
-        #--- Publisher of the edited frame
-        #self.image_pub = rospy.Publisher("image_topic",Image,queue_size=1)
 
         #--- Subscriber to the camera flow
         self.bridge = CvBridge()
@@ -26,10 +24,9 @@ class image_converter:
     	arucoDict = aruco.Dictionary_get(aruco.DICT_5X5_250)
     	arucoParam = aruco.DetectorParameters_create()
     	bboxs, ids, rejected = aruco.detectMarkers(gray, arucoDict, parameters = arucoParam)
-    	rospy.loginfo(ids)
     	if draw:
-        	aruco.drawDetectedMarkers(img, bboxs) 
-    		return [bboxs, ids]
+        	aruco.drawDetectedMarkers(img, bboxs, ids) 
+    	return [bboxs, ids]
     	
 
 
@@ -41,34 +38,30 @@ class image_converter:
         except CvBridgeError as e:
             print(e)
 
-        #--- If a valid frame is received, draw a circle and write HELLO WORLD
+        #--- If a valid frame is received
         (rows,cols,channels) = cv_image.shape
 
         if cols > 20 and rows > 20:
             arucofound = self.findArucoMarkers(cv_image)
-            #rospy.loginfo(arucofound)
-            #--- Text
-            text = "HELLO WORLD"
-            cv2.putText(cv_image, text, (100, 150), cv2.FONT_HERSHEY_SIMPLEX, 5, [0,0,200], 5)
-
-
-        #--- Optional: show the image on a window (comment this for the Raspberry Pi)
+             # loop through all the markers and augment each one
+            if  len(arucofound[0])!=0:
+                for bbox, id in zip(arucofound[0], arucofound[1]):
+                    rospy.loginfo("""mean width pos {} 
+                        mean height pos {}
+                        has id{}""".format((bbox[0]+bbox[1])/2,(bbox[0]+bbox[2])/2,id))
+                    time.sleep(0.5)
+            
         cv2.imshow("Image window", cv_image)
         cv2.waitKey(3)
 
-        #--- Publish the modified frame to a new topic
-        #try:
-        #    self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
-        #except CvBridgeError as e:
-        #    print(e)
-
+       
 #--------------- MAIN LOOP
 def main(args):
     #--- Create the object from the class we defined before
-    ic = image_converter()
+    ic = Aruco()
     
     #--- Initialize the ROS node
-    rospy.init_node('image_converter', anonymous=True)
+    rospy.init_node('aruco_detect', anonymous=True)
     try:
         rospy.spin()
     except KeyboardInterrupt:

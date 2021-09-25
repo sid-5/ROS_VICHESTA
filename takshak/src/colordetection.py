@@ -29,7 +29,7 @@ def callback(data):  #--- Callback function
           
             # Set range for red color and 
             # define mask
-            red_lower = np.array([136, 87, 111], np.uint8)
+            red_lower = np.array([0, 87, 111], np.uint8)
             red_upper = np.array([180, 255, 255], np.uint8)
             red_mask = cv2.inRange(hsvFrame, red_lower, red_upper)
           
@@ -101,7 +101,7 @@ def callback(data):  #--- Callback function
                                 1.0, (0, 255, 0))
           
             # Creating contour to track blue color
-            _, contours, hierarchy = cv2.findContours(blue_mask,
+            _,  contours, hierarchy = cv2.findContours(blue_mask,
                                                    cv2.RETR_TREE,
                                                    cv2.CHAIN_APPROX_SIMPLE)
             for pic, contour in enumerate(contours):
