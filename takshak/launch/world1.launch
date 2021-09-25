@@ -31,7 +31,7 @@
     args="-urdf -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model husky" />
   
   <!-- Joint state publisher -->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
 
   <!-- Robot state publisher -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
@@ -39,10 +39,17 @@
   <!-- Rviz -->
   <node name="rviz" pkg="rviz" type="rviz" />
 
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+        <param name="use_gui" value="True" />
+  </node>
+
   <!-- Spawn aruco markers -->
   <node pkg="takshak" name="spawn_marker" type="spawn_marker.py" />
   <!--cv node -->
   <node pkg="takshak" name="cv_node" type="cv.py" />
-  <node pkg="takshak" name="controller1" type="controller1.py" output="screen"/>
+
+  <include file="$(find takshak)/launch/nav.launch" />
+  <node pkg="takshak" name="controller1" type="controller1.py" output="screen"> 
+  </node>
 
 </launch>

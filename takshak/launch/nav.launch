@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <!--including the launch file with a navigation world-->
+    <!--<include file="$(find ebot_description)/launch/task2.launch" />-->
+    <!-- including launch file for localization using AMCL -->
+    <include file="$(find takshak)/launch/amcl_file.launch" />
+     <!-- including launch file for visualizing in rviz -->
+    <!-- <include file="$(find takshak)/launch/ebot_visualize.launch"/> -->
+    
+
+   
+
+      <!-- Move base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find takshak)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find takshak)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find takshak)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find takshak)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find takshak)/config/trajectory_planner.yaml" command="load" />
+
+    <param name="move_base/DWAPlannerROS/yaw_goal_tolerance" value="0.5"/>
+    <param name="move_base/DWAPlannerROS/xy_goal_tolerance" value="0.5"/>
+
+
+  </node>
+
+</launch>
+
+

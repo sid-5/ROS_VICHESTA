@@ -38,6 +38,7 @@ class LandRover:
     def og_callback(self,msg):
         ''' The callback function for occupancy_grid_subscriber'''
         self.occupancy_grid=msg
+        # print(msg)
 
     def odom_callback(self,data):
         ''' The callback function for odom_subscriber'''
@@ -62,18 +63,18 @@ class LandRover:
         for i1 in range(-7,6):
                 for j1 in range(-5,5):
                 # value of -1 indicates unexplored, 0 indicates free space, 100 indicates obstacle
-                point=self.occupancy_grid.data[(j+j1)*4000+(i+i1)]
-                if point==100 or point==-1:
-                    return True
+                    point=self.occupancy_grid.data[(j+j1)*4000+(i+i1)]
+                    if point==100 or point==-1:
+                        return True
         return False                                        # False as bot can move freely
         
     def points_collector(self,curr):
         ''' collects path points given by A_star_nav'''
         intermediate_points=[]
-                curr = curr.parent
-                while curr.parent:                                  # loop ends on collecting all intermediate points
+        curr = curr.parent
+        while curr.parent:                                  # loop ends on collecting all intermediate points
             intermediate_points.append([curr.x,curr.y])
-                    curr=curr.parent                        
+            curr=curr.parent                        
         intermediate_points.append([curr.x,curr.y])                     # End point of the journey
         intermediate_points=self.points_reducer(intermediate_points)                # optimising path points
         self.planned_path(intermediate_points)                          # setting out on the journey
@@ -97,47 +98,47 @@ class LandRover:
     def A_star_nav(self,start,goal):
         ''' A* navigation algorithm to find path points'''
         self.stop()
-            if self.obstacles_bool(goal[0],goal[1]) or self.obstacles_bool(start.x,start.y):
-                print("No way")                                 # either goal or start recognised as obstacle
-                return
-            open=[]                                         # list of to-be-explored points: mostly won't lie on the route 
+        if self.obstacles_bool(goal[0],goal[1]) or self.obstacles_bool(start.x,start.y):
+            print("No way")                                 # either goal or start recognised as obstacle
+            return
+        open=[]                                         # list of to-be-explored points: mostly won't lie on the route 
         closed=[]                                       # list of explored points: mostly lie on the route, already with lower cost
-            open.append(start)
+        open.append(start)
 
-            while True:
-            # choosing point with lowest f_cost to explore
-                m=0
-                for i in range(len(open)):
-                        if open[i].f_cost < open[m].f_cost:
-                            m=i
-                        elif open[i].f_cost == open[m].f_cost and open[i].h_cost < open[m].h_cost:
-                            m=i
-                curr=open.pop(m)
-                closed.append(curr)
+        while True:
+        # choosing point with lowest f_cost to explore
+            m=0
+            for i in range(len(open)):
+                    if open[i].f_cost < open[m].f_cost:
+                        m=i
+                    elif open[i].f_cost == open[m].f_cost and open[i].h_cost < open[m].h_cost:
+                        m=i
+            curr=open.pop(m)
+            closed.append(curr)
 
-                if curr.x==goal[0] and curr.y==goal[1]:                     # have reached goal, now collect points of the explored path
-                        self.points_collector(curr)
-                        return
+            if curr.x==goal[0] and curr.y==goal[1]:                     # have reached goal, now collect points of the explored path
+                    self.points_collector(curr)
+                    return
 
-                for pos in curr.neighbors:                          # check for neighbors to explore
-                        nbr=Cell(pos[0],pos[1])
-                        if self.obstacles_bool(pos[0],pos[1]):                  # reject the neighbor: because of closeness to obstacle
-                            continue
-                        for i in closed:                            # reject the neighbor: because we have shorter route to this point
-                            if nbr.x==i.x and nbr.y==i.y:
+            for pos in curr.neighbors:                          # check for neighbors to explore
+                    nbr=Cell(pos[0],pos[1])
+                    if self.obstacles_bool(pos[0],pos[1]):                  # reject the neighbor: because of closeness to obstacle
+                        continue
+                    for i in closed:                            # reject the neighbor: because we have shorter route to this point
+                        if nbr.x==i.x and nbr.y==i.y:
+                                break
+                    else:                                   # neighbor not rejected
+                        nbr.set_cost(curr,goal)                     # calculate the route costs: f,g,h
+                        for i in open:                          # update if previously included in open
+                                if nbr.x==i.x and nbr.y==i.y:
+                                    if nbr.g_cost < i.g_cost:
+                                            i.g_cost = nbr.g_cost
+                                            i.f_cost = nbr.f_cost
+                                            i.parent=curr               # updating parent as it provides better route 
                                     break
-                        else:                                   # neighbor not rejected
-                            nbr.set_cost(curr,goal)                     # calculate the route costs: f,g,h
-                            for i in open:                          # update if previously included in open
-                                    if nbr.x==i.x and nbr.y==i.y:
-                                        if nbr.g_cost < i.g_cost:
-                                                i.g_cost = nbr.g_cost
-                                                i.f_cost = nbr.f_cost
-                                                i.parent=curr               # updating parent as it provides better route 
-                                        break
-                            else:                               # never considered this point before: include in open
-                                    nbr.parent=curr
-                                    open.append(nbr)
+                        else:                               # never considered this point before: include in open
+                                nbr.parent=curr
+                                open.append(nbr)
 
     #Following functions for completing given planned path
     def stop(self):
@@ -169,6 +170,7 @@ class LandRover:
 
     def planned_path(self,arr):
         ''' Implements the motion towards goal with provided optimum points'''
+        print(arr)
         for [x,y] in arr:
             self.steer_angle(x,y)
             prev_x,prev_y=self.x,self.y
@@ -186,15 +188,15 @@ try:
     x=LandRover()
     for i in range(50):                                     # delaying for 5 seconds 
         x.rate.sleep()
-    Goals=[[0,0],[1,1]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
+    Goals=[[11.5,-6.25],[11,-7]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
     while i<len(Goals)-1:
         x.steer_angle(Goals[i+1][0],Goals[i+1][1])
         x.A_star_nav(Cell(Goals[i+1][0],Goals[i+1][1]),Goals[i])
         i+=1
     rospy.loginfo("Reached all Waypoints")
-except:
-    print("Error")
+except Exception as e:
+    print("Error: ",e)
 
 
 
