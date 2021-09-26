@@ -207,7 +207,17 @@ try:
     for i in range(50):                                     # delaying for 5 seconds 
         x.rate.sleep()
     ix,iy=[0,0]
-    Goals=[[11.0,-6],[-1.5,-8],[11,2.75]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
+    Goals=[
+        [11.0,-6], # start
+        [5.5,-4.5], # before 1st ball zone
+        [-1.5,-8], # before 2nd ball zone
+        [-7,0],  # aruco view
+        [2,2.75], # before 3rd ball zone
+        [2.75,2.75], # before 3rd ball zone
+        [-7.25,-2.25], # before rightmost door
+        [-7.25,8], # before leftmost door
+        [11.5,2.75] # final point
+    ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
     while i<len(Goals)-1:
         # x.steer_angle(Goals[i+1][0]-ix,Goals[i+1][1]-iy)
