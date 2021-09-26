@@ -7,6 +7,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 bridge = CvBridge() 
 dictt = {}
+answer = {}
 
 
 #red mask
@@ -87,7 +88,7 @@ def aruco_detect(img):
 	return [bboxs, ids]
 
 
-def colour_detect(imageFrame, width, height):
+def colour_detect(imageFrame, width_s, width_e, height, key):
 	# Creating contour to track red color
     _, contours, hierarchy = cv2.findContours(red_mask,
                                            cv2.RETR_TREE,
@@ -95,14 +96,15 @@ def colour_detect(imageFrame, width, height):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and -20<(cx-width)<20 and cy<height):
+        if(area > 200 and width_s<cx<width_e and cy<height):
         	x, y, w, h = cv2.boundingRect(contour)
         	imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h), 
                                        (0, 0, 255), 2)
             cv2.putText(imageFrame, "Red Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX, 1.0,
-                        (0, 0, 255))    
+                        (0, 0, 255))
+            answer[key] = "Red"    
   
     # Creating contour to track green color
     _, contours, hierarchy = cv2.findContours(green_mask,
@@ -111,7 +113,7 @@ def colour_detect(imageFrame, width, height):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and -20<(cx-width)<20 and cy<height):
+        if(area > 200 and width_s<cx<width_e and cy<height):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                        (x + w, y + h),
@@ -120,6 +122,7 @@ def colour_detect(imageFrame, width, height):
             cv2.putText(imageFrame, "Green Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))
+           	answer[key] = "Green" 
   
     # Creating contour to track blue color
     _,  contours, hierarchy = cv2.findContours(blue_mask,
@@ -128,7 +131,7 @@ def colour_detect(imageFrame, width, height):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and -20<(cx-width)<20 and cy<height):
+        if(area > 200 and width_s<cx<width_e and cy<height):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -137,6 +140,7 @@ def colour_detect(imageFrame, width, height):
             cv2.putText(imageFrame, "Blue Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
+            answer[key] = "Blue" 
 
     # Creating contour to track yellow color
     _,  contours, hierarchy = cv2.findContours(yellow_mask,
@@ -145,7 +149,7 @@ def colour_detect(imageFrame, width, height):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and -20<(cx-width)<20 and cy<height):
+        if(area > 200 and width_s<cx<width_e and cy<height):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -154,6 +158,7 @@ def colour_detect(imageFrame, width, height):
             cv2.putText(imageFrame, "Yellow Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
+            answer[key] = "Yellow" 
 
     # Creating contour to track purple color
     _,  contours, hierarchy = cv2.findContours(purple_mask,
@@ -162,7 +167,7 @@ def colour_detect(imageFrame, width, height):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and -20<(cx-width)<20 and cy<height):
+        if(area > 200 and width_s<cx<width_e and cy<height):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -171,6 +176,7 @@ def colour_detect(imageFrame, width, height):
             cv2.putText(imageFrame, "purple Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
+            answer[key] = "Purple" 
 
     # Creating contour to track balls
     _,  contours, hierarchy = cv2.findContours(ball_mask,
@@ -179,7 +185,7 @@ def colour_detect(imageFrame, width, height):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and -20<(cx-width)<20 and cy<height):
+        if(area > 200 and width_s<cx<width_e and cy<height):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -188,6 +194,7 @@ def colour_detect(imageFrame, width, height):
             cv2.putText(imageFrame, "ball", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
+            answer[key] = "Ball" 
 
 def callback(data):  #--- Callback function
         try:
@@ -203,14 +210,15 @@ def callback(data):  #--- Callback function
 		             # loop through all the markers and augment each one
 		            if  len(arucofound[0])!=0:
 		                for bbox, id in zip(arucofound[0], arucofound[1]):
-		                	dcit[id.item(0)] = None
+		                	dcit[id.item(0)] = (bbox.item(0,0,0),bbox.item(0,1,0))
 		                    width = (bbox.item(0,0,0)+bbox.item(0,1,0))/2
 		                    height = (bbox.item(0,0,1)+bbox.item(0,2,1))/2
 		                    #cv2.putText(cv_image, id, (width[0], height[1]),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
 		                    rospy.loginfo("""mean width pos {} 
 		                                     mean height pos {}
 		                                     has id{}""".format(width,height,id.item(0)))
-		                colorDetect(cv_image, width,(height-200))
+		                for key, value in dictt.items():
+		                	colorDetect(cv_image, value[0], value[1],(height-200), key)
 		        cv2.imshow("Image window", cv_image)
 		        cv2.waitKey(3)
         
