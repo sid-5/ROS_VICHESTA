@@ -54,8 +54,8 @@
   <node pkg="takshak" name="controller1" type="controller1.py" output="screen"> 
   </node>
 
-<!--cv aruco node 
-  <node pkg="takshak" name="cv_detect" type="colour_contour.py" output="screen"/>-->
+<!--cv aruco node-->
+  <node pkg="takshak" name="cv_detect" type="colour_contour.py" output="screen"/>
 
 <!--cv aruco node -->
   <node pkg="takshak" name="ball_detect" type="ball_detection.py" output="screen"/>
