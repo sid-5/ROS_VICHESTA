@@ -13,23 +13,23 @@ contourList = {}
 
 
 def get_contour_center(contour):
-	M = cv2.moments(contour)
-	cx = -1
-	cy = -1
-	if(M['m00']!=0):
-		cx = int(M['m10']/M['m00'])
-		cy = int(M['m01']/M['m00'])
-	return cx,cy
+    M = cv2.moments(contour)
+    cx = -1
+    cy = -1
+    if(M['m00']!=0):
+        cx = int(M['m10']/M['m00'])
+        cy = int(M['m01']/M['m00'])
+    return cx,cy
 
 
 def aruco_detect(img):
-	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	arucoDict = aruco.Dictionary_get(aruco.DICT_5X5_250)
-	arucoParam = aruco.DetectorParameters_create()
-	bboxs, ids, rejected = aruco.detectMarkers(gray, arucoDict, parameters = arucoParam)
-	#if draw:
-    	#aruco.drawDetectedMarkers(img, bboxs, ids)
-	return [bboxs, ids]
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    arucoDict = aruco.Dictionary_get(aruco.DICT_5X5_250)
+    arucoParam = aruco.DetectorParameters_create()
+    bboxs, ids, rejected = aruco.detectMarkers(gray, arucoDict, parameters = arucoParam)
+    #if draw:
+        #aruco.drawDetectedMarkers(img, bboxs, ids)
+    return [bboxs, ids]
 
 
 def colour_detect(imageFrame, width_s, width_e, height, key):
@@ -191,7 +191,7 @@ def callback(data):  #--- Callback function
          # loop through all the markers and augment each one
         if  len(arucofound[0])!=0:
             for bbox, id in zip(arucofound[0], arucofound[1]):
-            	dictt[id.item(0)] = (bbox.item(0,0,0),bbox.item(0,1,0))
+                dictt[id.item(0)] = (bbox.item(0,0,0),bbox.item(0,1,0))
                 width = (bbox.item(0,0,0)+bbox.item(0,1,0))/2
                 height = (bbox.item(0,0,1)+bbox.item(0,2,1))/2
                 #cv2.putText(cv_image, id, (width[0], height[1]),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
@@ -199,7 +199,7 @@ def callback(data):  #--- Callback function
                                  mean height pos {}
                                  has id{}""".format(width,height,id.item(0)))
             for key, value in dictt.items():
-            	colour_detect(cv_image, value[0], value[1],(height-200), key)
+                colour_detect(cv_image, value[0], value[1],(height-200), key)
     cv2.imshow("Image window", cv_image)
     cv2.waitKey(3)
         
