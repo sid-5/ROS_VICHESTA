@@ -96,13 +96,8 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
         cx, cy = get_contour_center(contour)
         if(area > 200 and width_s<cx<width_e and cy<height):
         	x, y, w, h = cv2.boundingRect(contour)
-        	imageFrame = cv2.rectangle(imageFrame, (x, y),
-                                       (x + w, y + h), 
-                                       (0, 0, 255), 2)
-            cv2.putText(imageFrame, "Red Colour", (cx, cy),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.0,
-                        (0, 0, 255))
-            answer[key] = "Red" 
+        	imageFrame = cv2.rectangle(imageFrame, (x, y),(x + w, y + h),(0, 0, 255), 2)
+            cv2.putText(imageFrame,"Red Colour",(cx, cy),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
             contourList["Red"] = cx   
   
     # Creating contour to track green color
@@ -116,8 +111,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                        (x + w, y + h),
-                                       (0, 255, 0), 2)
-              
+                                       (0, 255, 0), 2) 
             cv2.putText(imageFrame, "Green Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))

@@ -16,10 +16,7 @@ counter = 0
 #Balls mask
 ball_lower = np.array([160,50,50], np.uint8)
 ball_upper = np.array([165,255,255], np.uint8)
-ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
-kernal = np.ones((7, 7), "uint8")
-ball_mask = cv2.dilate(ball_mask, kernal)
-#res_ball = cv2.bitwise_and(img, img, mask = ball_mask)
+
 
 
 def get_contour_center(contour):
@@ -34,9 +31,13 @@ def get_contour_center(contour):
 
 
 
-def callback:
+def callback(data):
   img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
   hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+  ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
+  kernal = np.ones((7, 7), "uint8")
+  ball_mask = cv2.dilate(ball_mask, kernal)
+  #res_ball = cv2.bitwise_and(img, img, mask = ball_mask)
   (rows,cols,channels) = img.shape
   width,height = 0,0
   _, contours, hierarchy = cv2.findContours(ball_mask,
@@ -58,7 +59,7 @@ def callback:
                     1.0, (0, 255, 0))
 
 def main(args):
-  image_sub = rospy.Subscriber("/camera/color/image_raw",Image,callback)
+    image_sub = rospy.Subscriber("/camera/color/image_raw",Image,callback)
     
     #--- Initialize the ROS node
     rospy.init_node('ball_detect', anonymous=True)
