@@ -25,7 +25,9 @@ class Cell:
 class LandRover:
     extra_obstacles=[
         [5,-4.75],
-        [5.75,-4.75]
+        [5.75,-4.75],
+        [-4,-5],
+        [-3,-7]
     ]
     def __init__(self):
         rospy.init_node('controller1')                              # Creating a node
@@ -67,8 +69,8 @@ class LandRover:
             return True
         i=int(((x+0.0)/0.05)+2000)
         j=int(((y+0.0)/0.05)+2000)
-        for i1 in range(-7,6):
-                for j1 in range(-5,5):
+        for i1 in range(-10,11):
+                for j1 in range(-10,11):
                 # value of -1 indicates unexplored, 0 indicates free space, 100 indicates obstacle
                     point=self.occupancy_grid.data[(j+j1)*4000+(i+i1)]
                     if point!=0:
@@ -163,7 +165,7 @@ class LandRover:
         elif angle < -3 or 0<angle<3:
             b=1
         while abs(angle)>0.045 and (not rospy.is_shutdown()):
-            self.vel_msg.angular.z=b*0.15
+            self.vel_msg.angular.z=b*0.55
             self.velocity_publisher.publish(self.vel_msg)
             self.rate.sleep()
             angle=round(atan2(goal_y-self.y,goal_x-self.x)-self.yaw,4)
@@ -193,9 +195,9 @@ class LandRover:
                 if self.eulerian_distance(self.x,self.y,x,y)>0.5 and self.eulerian_distance(self.x,self.y,prev_x,prev_y) >1.0:
                     self.steer_angle(x,y)                       # to remove orientation errors over long distances
                     prev_x,prev_y=self.x,self.y
-                    self.go_ahead(1.5)                      # speed up as next point is far
+                    self.go_ahead(1.75)                      # speed up as next point is far
                 else:
-                    self.go_ahead(0.65)
+                    self.go_ahead(0.5)
             self.stop()
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
@@ -205,7 +207,7 @@ try:
     for i in range(50):                                     # delaying for 5 seconds 
         x.rate.sleep()
     ix,iy=[0,0]
-    Goals=[[11.0,-6],[11,2.75]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
+    Goals=[[11.0,-6],[-1.5,-8],[11,2.75]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
     while i<len(Goals)-1:
         # x.steer_angle(Goals[i+1][0]-ix,Goals[i+1][1]-iy)
