@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
   <!-- Gazebo parameters -->
@@ -48,8 +49,11 @@
   <!--cv node -->
   <node pkg="takshak" name="cv_node" type="cv.py" />
 
-  <include file="$(find takshak)/launch/nav.launch" />
+   <!--<include file="$(find takshak)/launch/nav.launch" />
   <node pkg="takshak" name="controller1" type="controller1.py" output="screen"> 
-  </node>
+  </node>-->
+
+<!--cv aruco node -->
+  <node pkg="takshak" name="aruco_detect" type="aruco.py" output="screen"/>
 
 </launch>

@@ -43,8 +43,9 @@
   <!-- Rviz -->
   <node name="rviz" pkg="rviz" type="rviz" args=" -d $(find takshak)/rviz/config.rviz"/>
 
-<!--cv color node -->
+<!--cv color node 
   <node pkg="takshak" name="color_detect" type="colordetection.py" output="screen"/>
+-->
 
 <!--cv aruco node -->
   <node pkg="takshak" name="aruco_detect" type="aruco.py" output="screen"/>

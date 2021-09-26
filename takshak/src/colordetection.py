@@ -16,15 +16,7 @@ def callback(data):  #--- Callback function
         #--- Read the frame and convert it using bridge
         try:
             imageFrame = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
-            #while(1):
-      
-            # Reading the video from the
-            # webcam in image frames
-          
-            # Convert the imageFrame in 
-            # BGR(RGB color space) to 
-            # HSV(hue-saturation-value)
-            # color space
+            
             hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
           
             # Set range for red color and 
