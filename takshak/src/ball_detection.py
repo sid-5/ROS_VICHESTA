@@ -57,13 +57,14 @@ def callback(data):
         cv2.putText(img, "ball", (cx, cy),
                     cv2.FONT_HERSHEY_SIMPLEX, 
                     1.0, (0, 255, 0))
+    cv2.imshow(img)
 
 def main(args):
     image_sub = rospy.Subscriber("/camera/color/image_raw",Image,callback)
     
     #--- Initialize the ROS node
     rospy.init_node('ball_detect', anonymous=True)
-    cv2.imshow(img)
+    
     print(counter)
     try:
         rospy.spin()
