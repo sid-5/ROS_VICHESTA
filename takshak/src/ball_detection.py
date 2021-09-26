@@ -8,6 +8,7 @@ import sys
 import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+bridge = CvBridge() 
 dictt = {}
 answer = {}
 counter = 0
