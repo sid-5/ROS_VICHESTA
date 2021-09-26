@@ -34,7 +34,7 @@ def get_contour_center(contour):
 
 def callback(data):
   global counter
-  img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+  img = bridge.imgmsg_to_cv2(data, desired_encoding='passthrough') #desired_encoding='passthrough'
   hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
   ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
   kernal = np.ones((7, 7), "uint8")
