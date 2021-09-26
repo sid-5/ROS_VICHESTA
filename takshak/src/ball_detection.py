@@ -33,6 +33,7 @@ def get_contour_center(contour):
 
 
 def callback(data):
+  global counter
   img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
   hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
   ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
