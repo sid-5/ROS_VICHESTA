@@ -209,7 +209,7 @@ try:
     ix,iy=[0,0]
     Goals=[
         [11.0,-6], # start
-        [5.5,-4.5], # before 1st ball zone
+        [5.25,-4.5], # before 1st ball zone
         [-1.5,-8], # before 2nd ball zone
         [-7,0],  # aruco view
         [2,2.75], # before 3rd ball zone

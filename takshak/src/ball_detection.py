@@ -9,6 +9,8 @@ import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 bridge = CvBridge() 
+dictt = {}
+answer = {}
 counter = 0
 
 
@@ -19,18 +21,19 @@ ball_upper = np.array([165,255,255], np.uint8)
 
 
 def get_contour_center(contour):
-	M = cv2.moments(contour)
-	cx = -1
-	cy = -1
-	if(M['m00']!=0):
-		cx = int(M['m10']/M['m00'])
-		cy = int(M['m01']/M['m00'])
-	return cx,cy
+    M = cv2.moments(contour)
+    cx = -1
+    cy = -1
+    if(M['m00']!=0):
+        cx = int(M['m10']/M['m00'])
+        cy = int(M['m01']/M['m00'])
+    return cx,cy
 
 
 
 
 def callback(data):
+  global counter
   img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
   hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
   ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
