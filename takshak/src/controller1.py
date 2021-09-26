@@ -23,6 +23,10 @@ class Cell:
             self.f_cost=self.g_cost+self.h_cost
 
 class LandRover:
+    extra_obstacles=[
+        [5,-4.75],
+        [5.75,-4.75]
+    ]
     def __init__(self):
         rospy.init_node('controller1')                              # Creating a node
         self.rate = rospy.Rate(10)                              # Rate of 10Hz
@@ -51,6 +55,7 @@ class LandRover:
         # getting ebot current coordinates and yaw(orientation)
         self.x,self.y=round(self.odom_msg.pose.pose.position.x,4),round(self.odom_msg.pose.pose.position.y,4)
         self.yaw=round(euler_from_quaternion([x,y,z,w])[2],4)
+        # print(self.x,self.y,self.yaw)
 
     def eulerian_distance(self,x1,y1,x2,y2):
         ''' distance measuring and returning function'''
@@ -58,13 +63,15 @@ class LandRover:
 
     def obstacles_bool(self,x,y):
         ''' returns True if [x,y] is very close to obstacle'''
+        if [x,y] in LandRover.extra_obstacles:
+            return True
         i=int(((x+0.0)/0.05)+2000)
         j=int(((y+0.0)/0.05)+2000)
         for i1 in range(-7,6):
                 for j1 in range(-5,5):
                 # value of -1 indicates unexplored, 0 indicates free space, 100 indicates obstacle
                     point=self.occupancy_grid.data[(j+j1)*4000+(i+i1)]
-                    if point==100 or point==-1:
+                    if point!=0:
                         return True
         return False                                        # False as bot can move freely
         
@@ -155,10 +162,16 @@ class LandRover:
             b=-1
         elif angle < -3 or 0<angle<3:
             b=1
-        while abs(round(atan2(goal_y-self.y,goal_x-self.x)-self.yaw,4))>0.045 and (not rospy.is_shutdown()):
-            self.vel_msg.angular.z=b*0.75
+        while abs(angle)>0.045 and (not rospy.is_shutdown()):
+            self.vel_msg.angular.z=b*0.15
             self.velocity_publisher.publish(self.vel_msg)
             self.rate.sleep()
+            angle=round(atan2(goal_y-self.y,goal_x-self.x)-self.yaw,4)
+            # print(angle,self.vel_msg)
+            if angle >3 or -3 <angle<0:
+                b=-1
+            elif angle < -3 or 0<angle<3:
+                b=1
         self.stop() 
     
     def go_ahead(self,fwd):
@@ -171,8 +184,10 @@ class LandRover:
     def planned_path(self,arr):
         ''' Implements the motion towards goal with provided optimum points'''
         print(arr)
-        for [x,y] in arr:
+        for [x,y] in arr[:len(arr)]:
+            print(self.x,self.y,self.yaw,x,y)
             self.steer_angle(x,y)
+            print("steered towards: ",x,y)
             prev_x,prev_y=self.x,self.y
             while self.eulerian_distance(self.x,self.y,x,y)>0.1:
                 if self.eulerian_distance(self.x,self.y,x,y)>0.5 and self.eulerian_distance(self.x,self.y,prev_x,prev_y) >1.0:
@@ -182,17 +197,20 @@ class LandRover:
                 else:
                     self.go_ahead(0.65)
             self.stop()
+        self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
 try:
     x=LandRover()
     for i in range(50):                                     # delaying for 5 seconds 
         x.rate.sleep()
-    Goals=[[11.5,-6.25],[11,-7]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
+    ix,iy=[0,0]
+    Goals=[[11.0,-6],[11,2.75]]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
     while i<len(Goals)-1:
-        x.steer_angle(Goals[i+1][0],Goals[i+1][1])
-        x.A_star_nav(Cell(Goals[i+1][0],Goals[i+1][1]),Goals[i])
+        # x.steer_angle(Goals[i+1][0]-ix,Goals[i+1][1]-iy)
+        x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+            [Goals[i][0]-ix,Goals[i][1]-iy])
         i+=1
     rospy.loginfo("Reached all Waypoints")
 except Exception as e:

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 <arg name="map_file" default="$(find takshak)/maps/world1.yaml"/>
-<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
-<node pkg="amcl" type="amcl" name="amcl" output="screen">
+<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+<!-- <node pkg="amcl" type="amcl" name="amcl" output="screen">
 
   <remap from="scan" to="/laser/scan" />
   <remap from="cmd_vel" to="/cmd_vel"/>
   <remap from="odom" to="/odom" />
 
-  <!-- Publish scans from best pose at a max of 10 Hz -->
   <param name="odom_model_type" value="diff"/>
   <param name="odom_alpha5" value="0.1"/>
   <param name="transform_tolerance" value="0.1" />
@@ -22,17 +21,17 @@
   <param name="odom_alpha2" value="0.2"/>
   <param name="odom_alpha3" value="0.8"/>
   <param name="odom_alpha4" value="0.2"/>
-  <param name="laser_z_hit" value="0.9"/>
+  <param name="laser_z_hit" value="0.09"/>
   <param name="laser_z_short" value="0.05"/>
   <param name="laser_z_max" value="0.05"/>
-  <param name="laser_z_rand" value="0.5"/>
-  <param name="laser_sigma_hit" value="0.1"/>
-  <param name="laser_lambda_short" value="0.1"/>
-  <param name="laser_lambda_short" value="0.1"/>
+  <param name="laser_z_rand" value="0.05"/>
+  <param name="laser_sigma_hit" value="0.01"/>
+  <param name="laser_lambda_short" value="0.01"/>
+  <param name="laser_lambda_short" value="0.01"/>
   <param name="laser_model_type" value="likelihood_field"/>
   <param name="laser_likelihood_max_dist" value="4.0"/>
-  <param name="update_min_d" value="0.2"/>
-  <param name="update_min_a" value="0.5"/>
+  <param name="update_min_d" value="0.02"/>
+  <param name="update_min_a" value="0.05"/>
   <param name="odom_frame_id" value="odom"/>
   <param name="base_frame_id" value="laser"/>
   <param name="global_frame_id" value="map"/>
@@ -40,11 +39,11 @@
   
   <param name="recovery_alpha_slow" value="0.0"/>
   <param name="recovery_alpha_fast" value="0.0"/>
-  <param name="initial_pose_x" value ="11.5"/>
-  <param name="initial_pose_y" value ="-6.2"/>
-  <param name="initial_pose_a" value ="3.14"/>
+  <param name="initial_pose_x" value ="0.0"/>
+  <param name="initial_pose_y" value ="0.0"/>
+  <param name="initial_pose_a" value ="0.0"/>
 
 </node>
-
+ -->
 </launch>
 
