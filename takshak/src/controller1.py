@@ -40,7 +40,8 @@ class LandRover:
         
         self.occupancy_grid=OccupancyGrid()                         # Object of type OccupancyGrid where map points are saved
         self.occupancy_grid_subscriber=rospy.Subscriber("/map",OccupancyGrid,self.og_callback)  # Setting up Subscriber to call self.og_callback when message of type OccupancyGrid is received
-
+        self.ball_counter=0
+    
     def og_callback(self,msg):
         ''' The callback function for occupancy_grid_subscriber'''
         self.occupancy_grid=msg
@@ -199,6 +200,8 @@ class LandRover:
                 else:
                     self.go_ahead(0.5)
             self.stop()
+            if [x,y] in [[5.25,-4.5],[-1.5,-8]]:
+                pass # self.ball_counter mei save kar by calling ball detector
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
@@ -219,11 +222,9 @@ try:
         [11.5,2.75] # final point
     ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
-    while i<len(Goals)-1:
-        # x.steer_angle(Goals[i+1][0]-ix,Goals[i+1][1]-iy)
-        x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+    x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
             [Goals[i][0]-ix,Goals[i][1]-iy])
-        i+=1
+
     rospy.loginfo("Reached all Waypoints")
 except Exception as e:
     print("Error: ",e)
