@@ -34,8 +34,8 @@ def aruco_detect(img):
 
 def colour_detect(imageFrame, width_s, width_e, height, key):
 
-    img = cv2.imread("a.png")
-    hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    
+    hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
     (rows,cols,channels) = img.shape
     width,height = 0,0
     #red mask

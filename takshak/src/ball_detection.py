@@ -2,7 +2,6 @@
 
 import cv2
 import cv2.aruco as aruco
-from matplotlib import pyplot as plt
 import numpy as np
 import sys
 import rospy
@@ -34,7 +33,7 @@ def get_contour_center(contour):
 
 def callback(data):
   global counter
-  img = bridge.imgmsg_to_cv2(data, desired_encoding='passthrough') #desired_encoding='passthrough'
+  img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
   hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
   ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
   kernal = np.ones((7, 7), "uint8")
@@ -59,7 +58,7 @@ def callback(data):
         cv2.putText(img, "ball", (cx, cy),
                     cv2.FONT_HERSHEY_SIMPLEX, 
                     1.0, (0, 255, 0))
-    cv2.imshow(img)
+    cv2.imshow("ball detect window",img)
 
 def main(args):
     image_sub = rospy.Subscriber("/camera/color/image_raw",Image,callback)
