@@ -5,6 +5,9 @@ from math import *
 from nav_msgs.msg import Odometry,OccupancyGrid,MapMetaData
 from geometry_msgs.msg import Pose, Point, Quaternion,Twist
 from tf.transformations import quaternion_from_euler,euler_from_quaternion
+from ball.srv import ball
+from ball.srv import ballRequest
+from ball.srv import ballResponse
 
 class Cell:
         def __init__(self,x,y):
@@ -201,9 +204,23 @@ class LandRover:
                     self.go_ahead(0.5)
             self.stop()
             if [x,y] in [[5.25,-4.5],[-1.5,-8]]:
+                data = rospy.wait_for_message('/camera/color/image_raw', Image)
+                self.ball_detect(data)
+
                 pass # self.ball_counter mei save kar by calling ball detector
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
+
+    def ball_detect(self, img):
+        rospy.wait_for_service('ball')
+        try:
+            ball = rospy.ServiceProxy('ball', ball)
+            res = ball(img)
+            self.ball_counter+= res
+        except Exception as e:
+            rospy.loginfo(e)
+
+
 
 try:
     x=LandRover()
