@@ -1,5 +1,5 @@
 sensor_msgs/Image imamge
 ---
-int[] ids
+int32[] ids
 string[] colors
 

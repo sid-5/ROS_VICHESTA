@@ -5,9 +5,13 @@ from math import *
 from nav_msgs.msg import Odometry,OccupancyGrid,MapMetaData
 from geometry_msgs.msg import Pose, Point, Quaternion,Twist
 from tf.transformations import quaternion_from_euler,euler_from_quaternion
-from ball.srv import ball
-from ball.srv import ballRequest
-from ball.srv import ballResponse
+from takshak.srv import ball
+from takshak.srv import ballRequest
+from takshak.srv import ballResponse
+from sensor_msgs.msg import Image
+import cv2
+from cv_bridge import CvBridge, CvBridgeError
+
 
 class Cell:
         def __init__(self,x,y):
@@ -203,20 +207,27 @@ class LandRover:
                 else:
                     self.go_ahead(0.5)
             self.stop()
-            if [x,y] in [[5.25,-4.5],[-1.5,-8]]:
+            if [x,y] in [[5.5,-4.5],[-1.5,-8]]:
                 data = rospy.wait_for_message('/camera/color/image_raw', Image)
+                bridge = CvBridge()
+                rospy.loginfo(data)
+                rospy.loginfo(type(data))
+                img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+                cv2.imshow("dsdfsdfdsfsdfds", img)
                 self.ball_detect(data)
+                rospy.loginfo(self.ball_counter)
 
                 pass # self.ball_counter mei save kar by calling ball detector
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
     def ball_detect(self, img):
+        rospy.loginfo("called ball_detect")
         rospy.wait_for_service('ball')
         try:
-            ball = rospy.ServiceProxy('ball', ball)
-            res = ball(img)
-            self.ball_counter+= res
+            ball_c = rospy.ServiceProxy('ball', ball)
+            res = ball_c(img)
+            self.ball_counter+= res.count
         except Exception as e:
             rospy.loginfo(e)
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from ball.srv import ball
-from ball.srv import ballRequest
-from ball.srv import ballResponse
+from takshak.srv import ball
+from takshak.srv import ballRequest
+from takshak.srv import ballResponse
 import cv2
 import cv2.aruco as aruco
 from matplotlib import pyplot as plt
@@ -25,11 +25,11 @@ def get_contour_center(contour):
 
 def detect_ball(data):
     count = 0
-    img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+    img = bridge.imgmsg_to_cv2(data.image, "bgr8") #desired_encoding='passthrough'
     hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     (rows,cols,channels) = img.shape
     width,height = 0,0
-
+    cv2.imshow("asadasd",img)
     #Balls mask
     ball_lower = np.array([160,50,50], np.uint8)
     ball_upper = np.array([165,255,255], np.uint8)
@@ -43,7 +43,7 @@ def detect_ball(data):
 
     res_ball = cv2.bitwise_and(img, img, mask = ball_mask)
 
-    contours, hierarchy = cv2.findContours(ball_mask,
+    _, contours, hierarchy = cv2.findContours(ball_mask,
                                                cv2.RETR_TREE,
                                                cv2.CHAIN_APPROX_SIMPLE)
     output = cv2.drawContours(res_ball, contours, -1, (0, 0, 255), 3)

@@ -49,18 +49,19 @@
   <!--cv node -->
  <!--  <node pkg="takshak" name="cv_node" type="cv.py" /> -->
 
+<!--ball server node -->
+  <node pkg="takshak" name="detect_ball_server" type="ballserver.py" output="screen"/>
 
    <include file="$(find takshak)/launch/nav.launch" />
   <node pkg="takshak" name="controller1" type="controller1.py" output="screen"> 
   </node>
 
-<!-- cv aruco node -->  
-<node pkg="takshak" name="cv_detect" type="colour_contour.py" output="screen"/>
+<!-- cv aruco node   
+<node pkg="takshak" name="cv_detect" type="colour_contour.py" output="screen"/>-->
 
-<!--cv aruco node -->
-  <node pkg="takshak" name="ball_detect" type="ball_detection.py" output="screen"/>
+<!--cv aruco node 
+  <node pkg="takshak" name="ball_detect" type="ball_detection.py" output="screen"/>-->
 
-<!--ball server node -->
-  <node pkg="takshak" name="detect_ball_server" type="ballserver.py" output="screen"/>
+
 
 </launch>

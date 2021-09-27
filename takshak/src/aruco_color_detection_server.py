@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from colour_aruco.srv import colour_aruco
-from colour_aruco.srv import colour_arucoRequest
-from colour_aruco.srv import colour_arucoResponse
+from takshak.srv import colour_aruco
+from takshak.srv import colour_arucoRequest
+from takshak.srv import colour_arucoResponse
 
 import rospy
 

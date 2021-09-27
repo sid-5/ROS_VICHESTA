@@ -1,4 +1,4 @@
-sensor_msgs/Image imamge
+sensor_msgs/Image image
 ---
 int64 count
 
