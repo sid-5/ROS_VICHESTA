@@ -57,7 +57,7 @@ The arena designed in the package is as follows :
 > 
 > Follow the installation instructions from [here](https://github.com/sid-5/ROS_VICHESTA/blob/master/README.md)
 
-#### **Reference Table**
+### **Reference Table**
 
 | Workflow Part 1 	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md) 	|
 |-----------------	|----------------------------------------------------------------------------------	|
