@@ -61,7 +61,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
     # for each color and bitwise_and operator
     # between imageFrame and mask determines
     # to detect only that particular color
-    kernal = np.ones((5, 5), "uint8")
+    kernal = np.ones((7, 7), "uint8")
       
     # For red color
     red_mask = cv2.dilate(red_mask, kernal)
