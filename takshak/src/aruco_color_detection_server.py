@@ -178,8 +178,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
 def handle_aruco_color(req):
     aruco_ids=[]
     color_ids=[]
-    cc = rospy.wait_for_message(/camera/color/image_raw, Image)
-    img = bridge.imgmsg_to_cv2(cc, "bgr8") #desired_encoding='passthrough'
+    img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
     cv2.imwrite("colour_aruco.png", img)
     arucofound = aruco_detect(img)
     if  len(arucofound[0])!=0:

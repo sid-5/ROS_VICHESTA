@@ -11,6 +11,9 @@ from takshak.srv import ballResponse
 from sensor_msgs.msg import Image
 import cv2
 from cv_bridge import CvBridge, CvBridgeError
+from takshak.srv import colour_aruco
+from takshak.srv import colour_arucoRequest
+from takshak.srv import colour_arucoResponse
 
 
 class Cell:
@@ -48,6 +51,7 @@ class LandRover:
         self.occupancy_grid=OccupancyGrid()                         # Object of type OccupancyGrid where map points are saved
         self.occupancy_grid_subscriber=rospy.Subscriber("/map",OccupancyGrid,self.og_callback)  # Setting up Subscriber to call self.og_callback when message of type OccupancyGrid is received
         self.ball_counter=0
+        self.answer = dict()
         self.camera_view=Image()
         self.camera_view_subscriber=rospy.Subscriber('/camera/color/image_raw', Image, self.camera_view_callback)
     
@@ -204,7 +208,10 @@ class LandRover:
             self.steer_angle(x,y)
             print("steered towards: ",x,y)
             if [x,y] in [[-10.0,-2.5]]:
-                self.aruco_m_c_detect()
+                data = self.camera_view
+                bridge = CvBridge()
+                img = bridge.imgmsg_to_cv2(data, "bgr8")
+                self.aruco_m_c_detect(img)
                 break
             prev_x,prev_y=self.x,self.y
             while self.eulerian_distance(self.x,self.y,x,y)>0.1:
@@ -236,7 +243,16 @@ class LandRover:
 
     def aruco_m_c_detect(self):
         rospy.loginfo("aruco doondte chalo")
-        pass
+        rospy.wait_for_service('ball')
+        try:
+            colour_a = rospy.ServiceProxy('colour_aruco', colour_aruco)
+            res = colour_a(img)
+            ids = res.ids
+            colors = res.colors
+            for i in range(len(ids)):
+                answer[ids[i]] = colors[i]
+        except Exception as e:
+            rospy.loginfo(e)
 
 
 
