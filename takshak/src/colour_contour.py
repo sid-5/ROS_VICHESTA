@@ -36,31 +36,30 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
 
     
     hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
-    (rows,cols,channels) = img.shape
     width,height = 0,0
     #red mask
-    red_lower = np.array([176, 60, 60], np.uint8) #BGR
-    red_upper = np.array([179, 255, 255], np.uint8)
+    red_lower = np.array([0, 60, 30], np.uint8) #BGR
+    red_upper = np.array([0, 255, 255], np.uint8)
     red_mask = cv2.inRange(hsvFrame, red_lower, red_upper)
 
     #yellow mask
-    yellow_lower = np.array([28, 60, 60], np.uint8)
-    yellow_upper = np.array([30, 255, 255], np.uint8)
+    yellow_lower = np.array([26, 60, 40], np.uint8)
+    yellow_upper = np.array([28, 255, 255], np.uint8)
     yellow_mask = cv2.inRange(hsvFrame, yellow_lower, yellow_upper)
 
     #blue mask
-    blue_lower = np.array([100, 60, 60], np.uint8)
+    blue_lower = np.array([102, 60, 30], np.uint8)
     blue_upper = np.array([103, 255, 255], np.uint8)
     blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
 
     #green mask
-    green_lower = np.array([60, 60, 60], np.uint8)
-    green_upper = np.array([65, 255, 255], np.uint8)
+    green_lower = np.array([48, 60, 30], np.uint8)
+    green_upper = np.array([50, 255, 255], np.uint8)
     green_mask = cv2.inRange(hsvFrame, green_lower, green_upper)
               
     #purple mask
-    purple_lower = np.array([146, 60, 60], np.uint8)
-    purple_upper = np.array([148, 255, 255], np.uint8)
+    purple_lower = np.array([139, 40, 25], np.uint8)
+    purple_upper = np.array([140, 255, 255], np.uint8)
     purple_mask = cv2.inRange(hsvFrame, purple_lower, purple_upper)
 
     # Morphological Transform, Dilation
@@ -95,10 +94,11 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and width_s<cx<width_e and cy<height):
+        if(area > 200 and width_s<cx<width_e):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),(x + w, y + h),(0, 0, 255),2)
             cv2.putText(imageFrame,"Red Colour",(cx, cy),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
+            answer[key] = "Red"
             contourList["Red"] = cx
     # Creating contour to track green color
     _, contours, hierarchy = cv2.findContours(green_mask,
@@ -107,7 +107,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and width_s<cx<width_e and cy<height):
+        if(area > 200 and width_s<cx<width_e):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                        (x + w, y + h),
@@ -125,7 +125,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and width_s<cx<width_e and cy<height):
+        if(area > 200 and width_s<cx<width_e):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -144,7 +144,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and width_s<cx<width_e and cy<height):
+        if(area > 200 and width_s<cx<width_e):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -163,7 +163,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
-        if(area > 200 and width_s<cx<width_e and cy<height):
+        if(area > 200 and width_s-10<cx<width_e+10):
             x, y, w, h = cv2.boundingRect(contour)
             imageFrame = cv2.rectangle(imageFrame, (x, y),
                                        (x + w, y + h),
@@ -180,9 +180,9 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
 def callback(data):  #--- Callback function
     try:
         cv_image = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+        cv2.imwrite("aruvoColoir.png", cv_image)
     except CvBridgeError as e:
         print(e)
-
     #--- If a valid frame is received
     (rows,cols,channels) = cv_image.shape
     width,height = 0,0
@@ -198,8 +198,11 @@ def callback(data):  #--- Callback function
                 rospy.loginfo("""mean width pos {} 
                                  mean height pos {}
                                  has id{}""".format(width,height,id.item(0)))
+            rospy.loginfo(dictt)
+            rospy.loginfo(height)
             for key, value in dictt.items():
-                colour_detect(cv_image, value[0], value[1],(height-200), key)
+                colour_detect(cv_image, value[0], value[1],height, key)
+    rospy.loginfo(answer)
     cv2.imshow("Image window", cv_image)
     cv2.waitKey(3)
         
