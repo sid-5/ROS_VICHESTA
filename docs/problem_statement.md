@@ -51,11 +51,13 @@ The arena designed in the package is as follows :
 > You will need to have Ubuntu 18.x LTS (Bionic Beaver) installed to successfully set up
 > the environment. ROS melodic preferred as a ros flavour.
 
-**Reference Material**
+#### **Reference Material**
 
-Download a ISO file from [here](https://releases.ubuntu.com/18.04/)
+> Download a ISO file from [here](https://releases.ubuntu.com/18.04/)
+> 
+> Follow the installation instructions from [here](https://github.com/sid-5/ROS_VICHESTA/blob/master/README.md)
 
-Follow the installation instructions from [here](https://github.com/sid-5/ROS_VICHESTA/blob/master/README.md)
+#### **Reference Table**
 
 | Workflow Part 1 	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md) 	|
 |-----------------	|----------------------------------------------------------------------------------	|
