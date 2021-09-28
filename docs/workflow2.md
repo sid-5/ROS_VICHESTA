@@ -2,7 +2,7 @@
 
 ### **Workflow**
 
-<img src="../images/workflow.png" style="vertical-align:middle; padding:25px 25px 25px 25px" width="700">
+> <img src="../images/workflow.png" style="vertical-align:middle; padding:25px 25px 25px 25px" width="700">
 
 ### **Explanation**
 
