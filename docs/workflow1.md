@@ -16,7 +16,7 @@
 
 #### Navigation
 
-> <img src="../images/image1.png" style="vertical-align:middle; padding:25px 25px 25px 25px" width="700">
+> <img src="../images/image1.jpeg" style="vertical-align:middle; padding:25px 25px 25px 25px" width="700">
 
 > We have used A-star algorithm for path planning of the bot's route to complete the task.
 
