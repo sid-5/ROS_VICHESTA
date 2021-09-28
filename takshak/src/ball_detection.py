@@ -47,7 +47,7 @@ def callback(data):
     #output = cv2.drawContours(res_ball, contours, -1, (0, 0, 255), 3)
     #cv2.imshow(output)
     for pic, contour in enumerate(contours):
-        counter += 1
+        # counter += 1
         area = cv2.contourArea(contour)
         cx, cy = get_contour_center(contour)
         if(area > 100):
@@ -58,6 +58,8 @@ def callback(data):
             cv2.putText(img, "ball", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))
+            print(w,h,math.ceil(w/h))
+            counter+=math.ceil(w/h)
     cv2.imshow("ball detect window",img)
     cv2.waitKey(3)
 

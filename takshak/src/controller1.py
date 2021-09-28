@@ -175,6 +175,26 @@ class LandRover:
         self.velocity_publisher.publish(self.vel_msg)
         self.rate.sleep()
 
+    def steer_angle_1(self,yaw):
+        self.stop()
+        angle=round(yaw-self.yaw,4)
+        if angle >3 or -3 <angle<0:
+            b=-1
+        elif angle < -3 or 0<angle<3:
+            b=1
+        while abs(angle)>0.045 and (not rospy.is_shutdown()):
+            self.vel_msg.angular.z=b*0.55
+            self.velocity_publisher.publish(self.vel_msg)
+            self.rate.sleep()
+            angle=round(yaw-self.yaw,4)
+            # print(angle,self.vel_msg)
+            if angle >3 or -3 <angle<0:
+                b=-1
+            elif angle < -3 or 0<angle<3:
+                b=1
+        self.stop() 
+
+
     def steer_angle(self,goal_x,goal_y):
         ''' Function to steer and direct ebot's face towards next point'''
         self.stop()
@@ -278,17 +298,27 @@ try:
         [-10,-2],  # aruco view
         # [-10,-4.25],  # aruco view
         # [-9,-1.5],  # aruco view
-        # [2,2.75], # before 3rd ball zone
+        [2,0], # before 3rd ball zone
         # [2.75,2.75], # before 3rd ball zone
         # [-7.25,-2.25], # before rightmost door
         # [-7.25,8], # before leftmost door
-        [11.5,2.5] # final point
+        # [11.5,2.5] # final point
     ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
-    while i<len(Goals):
-        x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+    x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
                 [Goals[i][0]-ix,Goals[i][1]-iy])
-        i+=1
+    i+=1
+    x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+                [Goals[i][0]-ix,Goals[i][1]-iy])
+    for j in [[5.21,0,0.97],[4.21,2.44,0.97],[3.91,3.90]]:
+        x.planned_path([[2,2],j[:2]])
+        x.steer_angle_1(j[2])
+        data = x.camera_view
+        bridge = CvBridge()
+        img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+        x.ball_detect(data)
+        rospy.loginfo(x.ball_counter)
+    # doors detect and move to 11,Y
     rospy.loginfo("Reached all Waypoints")
 except Exception as e:
     print("Error: ",e)
