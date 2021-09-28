@@ -62,6 +62,7 @@ add_service_files(
   FILES
   ball.srv
   colour_aruco.srv
+  door_colour.srv
 )
 
 ## Generate actions in the 'action' folder
