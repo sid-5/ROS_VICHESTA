@@ -1,14 +1,14 @@
 local_costmap:
   global_frame: odom
-  robot_base_frame: laser # line of error
-  update_frequency: 4.0 #before 5.0
-  publish_frequency: 1.0 #before 2.0
+  robot_base_frame: husky_robot_model__base_link
+  update_frequency: 2.0 #before 5.0
+  publish_frequency: 2.0 #before 2.0
   static_map: false
   rolling_window: true
-  width: 2 
-  height: 2
+  width: 2.5 
+  height: 2.5
   resolution: 0.025 #increase to for higher res 0.025
-  transform_tolerance: 0.2
-  cost_scaling_factor: 10
-  inflation_radius: 0.22
+  transform_tolerance: 0.2 #0.8
+  cost_scaling_factor: 2.6 #0.8 working  #2.6
+  inflation_radius: 0.2
 

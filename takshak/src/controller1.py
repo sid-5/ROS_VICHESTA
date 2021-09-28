@@ -226,7 +226,7 @@ class LandRover:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
-                self.ball_detect(data)
+                self.ball_detect(img)
                 rospy.loginfo(self.ball_counter)
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
