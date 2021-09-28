@@ -203,7 +203,7 @@ class LandRover:
             print(self.x,self.y,self.yaw,x,y)
             self.steer_angle(x,y)
             print("steered towards: ",x,y)
-            if [x,y] in [[-10.0,-2.75]]:
+            if [x,y] in [[-10.0,-2.5]]:
                 self.aruco_m_c_detect()
                 break
             prev_x,prev_y=self.x,self.y
@@ -215,7 +215,7 @@ class LandRover:
                 else:
                     self.go_ahead(0.5)
             self.stop()
-            if [x,y] in [[5.5,-4.5],[-1.5,-8]]:
+            if [x,y] in [[5.5,-4.5],[-0.25,-8]]:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
@@ -248,16 +248,18 @@ try:
     Goals=[
         [11.0,-6], # start
         # [5.25,-4.5], # before 1st ball zone
-        [-1.5,-8], # before 2nd ball zone
-        [-9.75,-2.5],  # aruco view
-        [2,2.75], # before 3rd ball zone
-        [2.75,2.75], # before 3rd ball zone
-        [-7.25,-2.25], # before rightmost door
+        # [-1.5,-8], # before 2nd ball zone
+        # [-10,-2.5],  # aruco view
+        # [-10,-4.25],  # aruco view
+        # [-9,-1.5],  # aruco view
+        # [2,2.75], # before 3rd ball zone
+        # [2.75,2.75], # before 3rd ball zone
+        # [-7.25,-2.25], # before rightmost door
         [-7.25,8], # before leftmost door
         [11.5,2.75] # final point
     ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
-    while i<2:
+    while i<len(Goals):
         x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
                 [Goals[i][0]-ix,Goals[i][1]-iy])
         i+=1
