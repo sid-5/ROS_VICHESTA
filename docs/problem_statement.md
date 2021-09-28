@@ -55,5 +55,6 @@ Download a ISO file from [here](https://releases.ubuntu.com/18.04/)
 
 Follow the installation instructions from [here](https://github.com/sid-5/ROS_VICHESTA/blob/master/README.md)
 
-
-
+| Workflow Part 1 	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md) 	|
+|-----------------	|----------------------------------------------------------------------------------	|
+| Workflow Part 2 	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow2.md) 	|
