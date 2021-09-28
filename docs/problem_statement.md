@@ -2,7 +2,9 @@
 
 ### Brief
 
+- The bots that navigate autonomously, it is a necessity to test the working of their path planning algorithms.
 
+- The task is to develop and refine a path planning algorithm that would allow a robot to navigate the given environment.
 
 ### **Problem Statement**
 
@@ -58,3 +60,5 @@ Follow the installation instructions from [here](https://github.com/sid-5/ROS_VI
 | Workflow Part 1 	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md) 	|
 |-----------------	|----------------------------------------------------------------------------------	|
 | Workflow Part 2 	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow2.md) 	|
+
+
