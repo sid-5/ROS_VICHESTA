@@ -58,7 +58,7 @@ def callback(data):
             cv2.putText(img, "ball", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))
-            print(w,h,math.ceil(w/h))
+            rospy.loginfo(f"{w},{h},{math.ceil(w/h)}")
             counter+=math.ceil(w/h)
     cv2.imshow("ball detect window",img)
     cv2.waitKey(3)

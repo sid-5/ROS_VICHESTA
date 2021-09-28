@@ -290,28 +290,28 @@ try:
     x=LandRover()
     for i in range(50):                                     # delaying for 5 seconds 
         x.rate.sleep()
-    ix,iy=[0,0]
-    Goals=[
-        [11.0,-6], # start
-        # [5.25,-4.5], # before 1st ball zone
-        # [-1.5,-8], # before 2nd ball zone
-        [-10,-2],  # aruco view
-        # [-10,-4.25],  # aruco view
-        # [-9,-1.5],  # aruco view
-        [2,0], # before 3rd ball zone
-        # [2.75,2.75], # before 3rd ball zone
-        # [-7.25,-2.25], # before rightmost door
-        # [-7.25,8], # before leftmost door
-        # [11.5,2.5] # final point
-    ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
-    i=0
-    x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
-                [Goals[i][0]-ix,Goals[i][1]-iy])
-    i+=1
-    x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
-                [Goals[i][0]-ix,Goals[i][1]-iy])
-    for j in [[5.21,0,0.97],[4.21,2.44,0.97],[3.91,3.90]]:
-        x.planned_path([[2,2],j[:2]])
+    # ix,iy=[0,0]
+    # Goals=[
+    #     [11.0,-6], # start
+    #     # [5.25,-4.5], # before 1st ball zone
+    #     # [-1.5,-8], # before 2nd ball zone
+    #     [-10,-2],  # aruco view
+    #     # [-10,-4.25],  # aruco view
+    #     # [-9,-1.5],  # aruco view
+    #     [2,0], # before 3rd ball zone
+    #     # [2.75,2.75], # before 3rd ball zone
+    #     # [-7.25,-2.25], # before rightmost door
+    #     # [-7.25,8], # before leftmost door
+    #     # [11.5,2.5] # final point
+    # ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
+    # i=0
+    # x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+    #             [Goals[i][0]-ix,Goals[i][1]-iy])
+    # i+=1
+    # x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+    #             [Goals[i][0]-ix,Goals[i][1]-iy])
+    for j in [[6.21,0,0],[4.21,2.44,3.14-0.3],[3.91,3.90,2*0.72]]:
+        x.planned_path([[2,1],j[:2]])
         x.steer_angle_1(j[2])
         data = x.camera_view
         bridge = CvBridge()
