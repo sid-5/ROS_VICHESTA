@@ -169,6 +169,7 @@ def handle_aruco_color(req):
         color_ids.append(answer[key])
     cv2.imshow("aru",img)
     cv2.waitKey(2000)
+    cv2.destroyAllWindows()
     response = colour_arucoResponse()
     response.ids = aruco_ids
     response.colors = color_ids

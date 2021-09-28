@@ -20,18 +20,18 @@
   </include>
 
   <!-- Spawn Robot model -->
-  <!-- <arg name="x" value="11.5"/>
+  <arg name="x" value="11.5"/>
   <arg name="y" value="-6.2"/>
   <arg name="z" value="0.0"/>
   <arg name="roll" value="0.0"/>
   <arg name="pitch" value="0.0"/>
-  <arg name="yaw" value="3.14"/> -->
-  <arg name="x" value="2"/>
-  <arg name="y" value="0"/>
+  <arg name="yaw" value="3.14"/>
+<!--   <arg name="x" value="2"/>
+  <arg name="y" value="1"/>
   <arg name="z" value="0.0"/>
   <arg name="roll" value="0.0"/>
   <arg name="pitch" value="0.0"/>
-  <arg name="yaw" value="0.0"/>
+  <arg name="yaw" value="0.0"/> -->
   <param name="robot_description" command="cat '$(find takshak)/models/husky_robot_model/model.urdf'"/>
 
   <node name="husky_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
