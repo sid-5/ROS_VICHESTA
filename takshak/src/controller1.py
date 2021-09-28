@@ -199,10 +199,13 @@ class LandRover:
     def planned_path(self,arr):
         ''' Implements the motion towards goal with provided optimum points'''
         print(arr)
-        for [x,y] in arr[:len(arr)]:
+        for [x,y] in arr[1:len(arr)]:
             print(self.x,self.y,self.yaw,x,y)
             self.steer_angle(x,y)
             print("steered towards: ",x,y)
+            if [x,y] in [[-10.0,-2.75]]:
+                self.aruco_m_c_detect()
+                break
             prev_x,prev_y=self.x,self.y
             while self.eulerian_distance(self.x,self.y,x,y)>0.1:
                 if self.eulerian_distance(self.x,self.y,x,y)>0.5 and self.eulerian_distance(self.x,self.y,prev_x,prev_y) >1.0:
@@ -216,12 +219,8 @@ class LandRover:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
-                # cv2.imshow("afin",img)
-                # cv2.waitKey(3000)
-                # cv2.destroyAllWindows()
                 self.ball_detect(data)
                 rospy.loginfo(self.ball_counter)
-
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
@@ -235,6 +234,10 @@ class LandRover:
         except Exception as e:
             rospy.loginfo(e)
 
+    def aruco_m_c_detect(self):
+        rospy.loginfo("aruco doondte chalo")
+        pass
+
 
 
 try:
@@ -246,7 +249,7 @@ try:
         [11.0,-6], # start
         # [5.25,-4.5], # before 1st ball zone
         [-1.5,-8], # before 2nd ball zone
-        [-7,0],  # aruco view
+        [-9.75,-2.5],  # aruco view
         [2,2.75], # before 3rd ball zone
         [2.75,2.75], # before 3rd ball zone
         [-7.25,-2.25], # before rightmost door
@@ -254,9 +257,10 @@ try:
         [11.5,2.75] # final point
     ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
-    x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
-            [Goals[i][0]-ix,Goals[i][1]-iy])
-
+    while i<2:
+        x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
+                [Goals[i][0]-ix,Goals[i][1]-iy])
+        i+=1
     rospy.loginfo("Reached all Waypoints")
 except Exception as e:
     print("Error: ",e)
