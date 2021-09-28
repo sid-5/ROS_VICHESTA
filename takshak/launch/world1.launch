@@ -59,7 +59,7 @@
 <!-- cv aruco node   
 <node pkg="takshak" name="cv_detect" type="colour_contour.py" output="screen"/>-->
 
-<!--cv aruco node 
+<!--ball node
   <node pkg="takshak" name="ball_detect" type="ball_detection.py" output="screen"/>-->
 
 

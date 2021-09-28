@@ -37,7 +37,7 @@ class LandRover:
         [-3,-7]
     ]
     def __init__(self):
-        rospy.init_node('controller1')                              # Creating a node
+        rospy.init_node('controller1', anonymous=True)                              # Creating a node
         self.rate = rospy.Rate(10)                              # Rate of 10Hz
         self.velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)     # Setting up Publisher that will publish to the topic '/cmd_vel'
         self.vel_msg = Twist()                                  # Object of type Twist to set values for publishing
@@ -210,10 +210,7 @@ class LandRover:
             if [x,y] in [[5.5,-4.5],[-1.5,-8]]:
                 data = rospy.wait_for_message('/camera/color/image_raw', Image)
                 bridge = CvBridge()
-                rospy.loginfo(data)
-                rospy.loginfo(type(data))
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
-                cv2.imshow("dsdfsdfdsfsdfds", img)
                 self.ball_detect(data)
                 rospy.loginfo(self.ball_counter)
 
@@ -227,7 +224,7 @@ class LandRover:
         try:
             ball_c = rospy.ServiceProxy('ball', ball)
             res = ball_c(img)
-            self.ball_counter+= res.count
+            self.ball_counter += res.count
         except Exception as e:
             rospy.loginfo(e)
 

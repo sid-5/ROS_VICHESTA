@@ -32,33 +32,34 @@ def get_contour_center(contour):
 
 
 def callback(data):
-  global counter
-  img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
-  hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-  ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
-  kernal = np.ones((7, 7), "uint8")
-  ball_mask = cv2.dilate(ball_mask, kernal)
-  #res_ball = cv2.bitwise_and(img, img, mask = ball_mask)
-  (rows,cols,channels) = img.shape
-  width,height = 0,0
-  _, contours, hierarchy = cv2.findContours(ball_mask,
+    global counter
+    img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+    hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    ball_mask = cv2.inRange(hsvFrame, ball_lower, ball_upper)
+    kernal = np.ones((7, 7), "uint8")
+    ball_mask = cv2.dilate(ball_mask, kernal)
+    #res_ball = cv2.bitwise_and(img, img, mask = ball_mask)
+    (rows,cols,channels) = img.shape
+    width,height = 0,0
+    _, contours, hierarchy = cv2.findContours(ball_mask,
                                              cv2.RETR_TREE,
                                              cv2.CHAIN_APPROX_SIMPLE)
-  #output = cv2.drawContours(res_ball, contours, -1, (0, 0, 255), 3)
-  #cv2.imshow(output)
-  for pic, contour in enumerate(contours):
-    counter += 1
-    area = cv2.contourArea(contour)
-    cx, cy = get_contour_center(contour)
-    if(area > 100):
-        x, y, w, h = cv2.boundingRect(contour)
-        img = cv2.rectangle(img, (x, y), 
-                                    (x + w, y + h),
-                                    (0, 255, 0), 2)
-        cv2.putText(img, "ball", (cx, cy),
-                    cv2.FONT_HERSHEY_SIMPLEX, 
-                    1.0, (0, 255, 0))
+    #output = cv2.drawContours(res_ball, contours, -1, (0, 0, 255), 3)
+    #cv2.imshow(output)
+    for pic, contour in enumerate(contours):
+        counter += 1
+        area = cv2.contourArea(contour)
+        cx, cy = get_contour_center(contour)
+        if(area > 100):
+            x, y, w, h = cv2.boundingRect(contour)
+            img = cv2.rectangle(img, (x, y), 
+                                        (x + w, y + h),
+                                        (0, 255, 0), 2)
+            cv2.putText(img, "ball", (cx, cy),
+                        cv2.FONT_HERSHEY_SIMPLEX, 
+                        1.0, (0, 255, 0))
     cv2.imshow("ball detect window",img)
+    cv2.waitKey(3)
 
 def main(args):
     image_sub = rospy.Subscriber("/camera/color/image_raw",Image,callback)
