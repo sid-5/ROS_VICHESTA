@@ -179,8 +179,8 @@ def handle_aruco_color(req):
 	aruco_ids=[]
 	color_ids=[]
     img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
-    cv2.imwrite("ballserver.png", img)
-    
+    cv2.imwrite("colour_aruco.png", img)
+    arucofound = aruco_detect(img)
     if  len(arucofound[0])!=0:
       for bbox, id in zip(arucofound[0], arucofound[1]):
         dictt[id.item(0)] = (bbox.item(0,0,0),bbox.item(0,1,0))
