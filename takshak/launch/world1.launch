@@ -52,6 +52,9 @@
 <!--ball server node -->
   <node pkg="takshak" name="detect_ball_server" type="ballserver.py" output="screen"/>
 
+<!--aruco colour server node -->
+  <node pkg="takshak" name="aruco_color_server" type="aruco_color_detection_server.py" output="screen"/>
+
    <include file="$(find takshak)/launch/nav.launch" />
   <node pkg="takshak" name="controller1" type="controller1.py" output="screen"> 
   </node>
