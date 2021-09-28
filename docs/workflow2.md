@@ -22,7 +22,8 @@
 > - After detection of that `aruco` marker, we need to detect the  color of the box which is kept on the top of that particular  `aruco` marker. Let the color be `C`.
 >
 > - Now after the detection of the color the the robot needs to  navigate to the rooms which has `colored doors` to the finish line. 
->
+> > **Colored Doors**
+> <img src="../images/image3.jpeg" style="vertical-align:middle; > padding:25px 25px 25px 25px" width="700">
 > - Next task of the bot is to detect the same color as that of box  that of the door. Whichever door which has the same color, the bot > needs to pass through that particular door and cross the finish > line in order to accomplish the task. 
 > 
 > - After doing so the task will get over.
