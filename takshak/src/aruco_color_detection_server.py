@@ -176,8 +176,8 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
 
 
 def handle_aruco_color(req):
-	aruco_ids=[]
-	color_ids=[]
+    aruco_ids=[]
+    color_ids=[]
     img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
     cv2.imwrite("colour_aruco.png", img)
     arucofound = aruco_detect(img)
@@ -193,9 +193,8 @@ def handle_aruco_color(req):
         print(dictt)
         print(answer)
       for key, value in dictt.items():
-        colour_detect(img, value[0], value[1],(height-200), key)
+        color_ids.append(colour_detect(img, value[0], value[1],(height-200), key))
         aruco_ids.append(key)
-        color_ids = 
     cv2.imshow(img)
     cv2.waitkey(4000)
     response = colour_arucoResponse()

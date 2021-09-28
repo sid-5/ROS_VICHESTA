@@ -48,6 +48,11 @@ class LandRover:
         self.occupancy_grid=OccupancyGrid()                         # Object of type OccupancyGrid where map points are saved
         self.occupancy_grid_subscriber=rospy.Subscriber("/map",OccupancyGrid,self.og_callback)  # Setting up Subscriber to call self.og_callback when message of type OccupancyGrid is received
         self.ball_counter=0
+        self.camera_view=Image()
+        self.camera_view_subscriber=rospy.Subscriber('/camera/color/image_raw', Image, self.camera_view_callback)
+    
+    def camera_view_callback(self,msg):
+        self.camera_view=msg
     
     def og_callback(self,msg):
         ''' The callback function for occupancy_grid_subscriber'''
@@ -208,13 +213,15 @@ class LandRover:
                     self.go_ahead(0.5)
             self.stop()
             if [x,y] in [[5.5,-4.5],[-1.5,-8]]:
-                data = rospy.wait_for_message('/camera/color/image_raw', Image)
+                data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
+                # cv2.imshow("afin",img)
+                # cv2.waitKey(3000)
+                # cv2.destroyAllWindows()
                 self.ball_detect(data)
                 rospy.loginfo(self.ball_counter)
 
-                pass # self.ball_counter mei save kar by calling ball detector
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
