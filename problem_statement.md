@@ -14,5 +14,5 @@ environment and a four-wheel robot model. The robot model has the following sens
 
 The arena designed in the package is as follows :
 
-<img src="images/arena_map.png" width="500">
+<img src="images/arena_map.png" width="800">
 
