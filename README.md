@@ -83,7 +83,7 @@ sudo apt install gazebo9 libgazebo9-dev
 ## Run the simulation
 
 - Clone this repository in the `src` folder of your catkin workspace.
-- Inside your workspace folder, run `catkin_make`.
+- Inside your workspace folder, run `catkin build`.
 - Open a terminal and run the following command to start the simulation:
   ```
   roslaunch takshak world1.launch

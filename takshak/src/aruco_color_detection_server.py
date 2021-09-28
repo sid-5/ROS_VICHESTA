@@ -181,20 +181,21 @@ def handle_aruco_color(req):
     img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
     cv2.imwrite("colour_aruco.png", img)
     arucofound = aruco_detect(img)
-    if len(arucofound[0])!=0:
-        for bbox, id in zip(arucofound[0], arucofound[1]):
-            dictt[id.item(0)] = (bbox.item(0,0,0),bbox.item(0,1,0))
-            width = (bbox.item(0,0,0)+bbox.item(0,1,0))/2
-            height = (bbox.item(0,0,1)+bbox.item(0,2,1))/2
-            cv2.putText(img, "id", (10,10),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
-            print("""mean width pos {} 
-                              mean height pos {}
-                              has id{}""".format(width,height,id.item(0)))
-            print(dictt)
-            print(answer)
-        for key, value in dictt.items():
-            aruco_ids.append(key)
-            color_ids.append(colour_detect(img, value[0], value[1],(height-200), key))
+    if  len(arucofound[0])!=0:
+      for bbox, id in zip(arucofound[0], arucofound[1]):
+        dictt[id.item(0)] = (bbox.item(0,0,0),bbox.item(0,1,0))
+        width = (bbox.item(0,0,0)+bbox.item(0,1,0))/2
+        height = (bbox.item(0,0,1)+bbox.item(0,2,1))/2
+        cv2.putText(img, "id", (10,10),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
+        print("""mean width pos {} 
+                          mean height pos {}
+                          has id{}""".format(width,height,id.item(0)))
+        print(dictt)
+        print(answer)
+      for key, value in dictt.items():
+        color_ids.append(colour_detect(img, value[0], value[1],(height-200), key))
+        aruco_ids.append(key)
+>>>>>>> 76959df3905c944ac9e2d3441acb683d7439014d
     cv2.imshow(img)
     cv2.waitkey(4000)
     response = colour_arucoResponse()
