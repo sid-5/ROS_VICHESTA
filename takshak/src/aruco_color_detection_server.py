@@ -7,6 +7,9 @@ import cv2
 import cv2.aruco as aruco
 import numpy as np
 import sys
+import rospy
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
 dictt = {}
 answer = {}
 import rospy
@@ -21,6 +24,7 @@ def get_contour_center(contour):
     return cx,cy
 
 def aruco_detect(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     arucoDict = aruco.Dictionary_get(aruco.DICT_5X5_250)
     arucoParam = aruco.DetectorParameters_create()
     bboxs, ids, rejected = aruco.detectMarkers(gray, arucoDict, parameters = arucoParam)
@@ -84,7 +88,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
 
     
     # Creating contour to track red color
-    contours, hierarchy = cv2.findContours(red_mask,
+    _, contours, hierarchy = cv2.findContours(red_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -98,7 +102,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
           return "Red"    
   
     # Creating contour to track green color
-    contours, hierarchy = cv2.findContours(green_mask,
+    _, contours, hierarchy = cv2.findContours(green_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -117,7 +121,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
             return "Green"
   
     # Creating contour to track blue color
-    contours, hierarchy = cv2.findContours(blue_mask,
+    _, contours, hierarchy = cv2.findContours(blue_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -136,7 +140,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
             return "Blue"
 
     # Creating contour to track yellow color
-    contours, hierarchy = cv2.findContours(yellow_mask,
+    _, contours, hierarchy = cv2.findContours(yellow_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -154,7 +158,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
             answer[key] = "Yellow"
             return "Yellow"
     # Creating contour to track purple color
-    contours, hierarchy = cv2.findContours(purple_mask,
+    _, contours, hierarchy = cv2.findContours(purple_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -178,6 +182,7 @@ def colour_detect(imageFrame, width_s, width_e, height, key):
 def handle_aruco_color(req):
     aruco_ids=[]
     color_ids=[]
+    bridge=CvBridge()
     img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
     cv2.imwrite("colour_aruco.png", img)
     arucofound = aruco_detect(img)
@@ -195,8 +200,8 @@ def handle_aruco_color(req):
       for key, value in dictt.items():
         color_ids.append(colour_detect(img, value[0], value[1],(height-200), key))
         aruco_ids.append(key)
-    cv2.imshow(img)
-    cv2.waitkey(4000)
+    cv2.imshow("aru",img)
+    cv2.waitKey(2000)
     response = colour_arucoResponse()
     response.ids = aruco_ids
     response.colors = color_ids

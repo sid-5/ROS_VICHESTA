@@ -22,8 +22,8 @@ class Cell:
             self.x,self.y=x,y                                   # coordinates of the Cell
             self.g_cost,self.h_cost,self.f_cost=0,0,0
             self.neighbors=[]                                   # neighbors at a distance of 0.25 in x,y or both
-            for i in [-0.25,0,0.25]:
-                for j in [-0.25,0,0.25]:
+            for i in [-0.5,0,0.5]:
+                for j in [-0.5,0,0.5]:
                         if i==j==0:
                                 continue
                         self.neighbors.append([x+i,y+j])
@@ -34,10 +34,11 @@ class Cell:
 
 class LandRover:
     extra_obstacles=[
-        [5,-4.75],
-        [5.75,-4.75],
-        [-4,-5],
-        [-3,-7]
+        [2.0,-8.0],
+        # [5,-4.75],
+        # [5.75,-4.75],
+        [-4.0,-5.0],
+        [-3.0,-7.0]
     ]
     def __init__(self):
         rospy.init_node('controller1', anonymous=True)                              # Creating a node
@@ -51,7 +52,7 @@ class LandRover:
         self.occupancy_grid=OccupancyGrid()                         # Object of type OccupancyGrid where map points are saved
         self.occupancy_grid_subscriber=rospy.Subscriber("/map",OccupancyGrid,self.og_callback)  # Setting up Subscriber to call self.og_callback when message of type OccupancyGrid is received
         self.ball_counter=0
-        self.answer = dict()
+        self.aruco_and_color = dict()
         self.camera_view=Image()
         self.camera_view_subscriber=rospy.Subscriber('/camera/color/image_raw', Image, self.camera_view_callback)
     
@@ -176,6 +177,7 @@ class LandRover:
 
     def steer_angle(self,goal_x,goal_y):
         ''' Function to steer and direct ebot's face towards next point'''
+        self.stop()
         angle=round(atan2(goal_y-self.y,goal_x-self.x)-self.yaw,4)
         if angle >3 or -3 <angle<0:
             b=-1
@@ -207,12 +209,13 @@ class LandRover:
             print(self.x,self.y,self.yaw,x,y)
             self.steer_angle(x,y)
             print("steered towards: ",x,y)
-            if [x,y] in [[-10.0,-2.5]]:
+            if x in [-9,-9.5,-10] and y in [-3.5,-3,-2.5,-2] and len(self.aruco_and_color)!=5:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8")
-                self.aruco_m_c_detect(img)
-                break
+                self.aruco_m_c_detect(data)
+            else:
+                rospy.loginfo(self.aruco_and_color)
             prev_x,prev_y=self.x,self.y
             while self.eulerian_distance(self.x,self.y,x,y)>0.1:
                 if self.eulerian_distance(self.x,self.y,x,y)>0.5 and self.eulerian_distance(self.x,self.y,prev_x,prev_y) >1.0:
@@ -222,7 +225,14 @@ class LandRover:
                 else:
                     self.go_ahead(0.5)
             self.stop()
-            if [x,y] in [[5.5,-4.5],[-0.25,-8]]:
+            if x in [-9,-9.5,-10] and y in [-3.5,-3,-2.5,-2] and len(self.aruco_and_color)!=5:
+                data = self.camera_view
+                bridge = CvBridge()
+                img = bridge.imgmsg_to_cv2(data, "bgr8")
+                self.aruco_m_c_detect(data)
+            else:
+                rospy.loginfo(self.aruco_and_color)
+            if [x,y] in [[5.5,-4.5],[-0.5,-8]]:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
@@ -241,16 +251,16 @@ class LandRover:
         except Exception as e:
             rospy.loginfo(e)
 
-    def aruco_m_c_detect(self):
+    def aruco_m_c_detect(self,img):
         rospy.loginfo("aruco doondte chalo")
         rospy.wait_for_service('ball')
         try:
-            colour_a = rospy.ServiceProxy('colour_aruco', colour_aruco)
+            colour_a = rospy.ServiceProxy('aruco_color', colour_aruco)
             res = colour_a(img)
             ids = res.ids
             colors = res.colors
             for i in range(len(ids)):
-                answer[ids[i]] = colors[i]
+                self.aruco_and_color[ids[i]] = colors[i]
         except Exception as e:
             rospy.loginfo(e)
 
@@ -265,14 +275,14 @@ try:
         [11.0,-6], # start
         # [5.25,-4.5], # before 1st ball zone
         # [-1.5,-8], # before 2nd ball zone
-        # [-10,-2.5],  # aruco view
+        [-10,-2],  # aruco view
         # [-10,-4.25],  # aruco view
         # [-9,-1.5],  # aruco view
         # [2,2.75], # before 3rd ball zone
         # [2.75,2.75], # before 3rd ball zone
         # [-7.25,-2.25], # before rightmost door
-        [-7.25,8], # before leftmost door
-        [11.5,2.75] # final point
+        # [-7.25,8], # before leftmost door
+        [11.5,2.5] # final point
     ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
     i=0
     while i<len(Goals):
