@@ -25,7 +25,7 @@ def detect_ball(data):
     #data = rospy.wait_for_message('/camera/color/image_raw', Image)
     count = 0
     img = bridge.imgmsg_to_cv2(data.image, "bgr8") #desired_encoding='passthrough'
-    cv2.imwrite("ballserver.png", img)
+    #cv2.imwrite("ballserver.png", img)
     hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hsv = hsvFrame[240,240]
     cv2.putText(img, "point", (240,240),
@@ -61,7 +61,7 @@ def detect_ball(data):
                       cv2.FONT_HERSHEY_SIMPLEX, 
                       1.0, (0, 255, 0))
     cv2.imshow("Ball Detection",img)
-    cv2.waitKey(300)
+    cv2.waitKey(5000)
     rospy.loginfo("Returning {}".format(count))
     return ballResponse(count)
 
@@ -74,3 +74,4 @@ def detect_ball_server():
 if __name__ == "__main__":
     detect_ball_server()
     cv2.destroyAllWindows()
+    
