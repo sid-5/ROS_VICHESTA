@@ -20,18 +20,18 @@
   </include>
 
   <!-- Spawn Robot model -->
-<!--   <arg name="x" value="11.5"/>
+  <arg name="x" value="11.5"/>
   <arg name="y" value="-6.2"/>
   <arg name="z" value="0.0"/>
   <arg name="roll" value="0.0"/>
   <arg name="pitch" value="0.0"/>
-  <arg name="yaw" value="3.14"/> -->
-  <arg name="x" value="2"/>
+  <arg name="yaw" value="3.14"/>
+<!--   <arg name="x" value="2"/>
   <arg name="y" value="1"/>
   <arg name="z" value="0.0"/>
   <arg name="roll" value="0.0"/>
   <arg name="pitch" value="0.0"/>
-  <arg name="yaw" value="0.0"/>
+  <arg name="yaw" value="0.0"/> -->
   <param name="robot_description" command="cat '$(find takshak)/models/husky_robot_model/model.urdf'"/>
 
   <node name="husky_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
@@ -57,6 +57,8 @@
 
 <!--ball server node -->
   <node pkg="takshak" name="detect_ball_server" type="ballserver.py" output="screen"/>
+
+  <node pkg="takshak" name="door_server" type="door_server.py" output="screen"/>
 
 <!--aruco colour server node -->
   <node pkg="takshak" name="aruco_color_server" type="aruco_color_detection_server.py" output="screen"/>

@@ -260,7 +260,7 @@ class LandRover:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
-                self.ball_detect(img)
+                self.ball_detect(data)
                 rospy.loginfo(self.ball_counter)
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
@@ -274,13 +274,20 @@ class LandRover:
         img = bridge.imgmsg_to_cv2(data, "bgr8")
         rospy.loginfo("called door_detect")
         rospy.wait_for_service('door_colour')
+        door_ys=[-2.1, 0.4, 2.9, 5.4, 7.9] # rightmost red tha, leftmost purple
+        door_ys=door_ys[::-1]
         try:
             door = rospy.ServiceProxy('door_colour', door_colour)
-            res = door(img)
+            res = door(data)
             x_pos = res.cx
             color = res.color
+            temp_tuples=[]
             for i in range(len(x_pos)):
-                self.door_color_ids[x_pos[i]] = color[i]
+                temp_tuples.append((x_pos[i],color[i]))
+            temp_tuples.sort()
+            rospy.loginfo(temp_tuples)
+            for i in range(5):
+                self.door_color_ids[temp_tuples[2*i][1]]=door_ys[i]
             rospy.loginfo(self.door_color_ids)
         except Exception as e:
             rospy.loginfo(e)
@@ -312,10 +319,11 @@ class LandRover:
     ##############
     def find_door_and_move(self):
         door_x=9.019
-        door_ys=[-2.1,0.4,2.9,5.4,7.9] # rightmost red tha, leftmost purple
+        # door_ys=[-2.1, 0.4, 2.9, 5.4, 7.9] # rightmost red tha, leftmost purple
         # door_ys=[(-3.1,-1.1),(-0.6,1.4),(1.9,3.9),(4.4,6.4),(6.9,8.9)]
+        # 'Red', 'Green', 'Yellow', 'Blue', 'Purple'
         door_color=self.aruco_and_color[self.ball_counter%5]
-        xd1,yd1=7,door_ys[self.door_color_ids[door_color]]
+        xd1,yd1=7,self.door_color_ids[door_color]
         xd2,yd2=11.5,yd1
         self.planned_path([[self.x,self.y],[xd1,yd1]])
         rospy.loginfo("Entering through "+door_color+" door")
@@ -325,7 +333,7 @@ class LandRover:
 
 try:
     x=LandRover()
-    for i in range(50):                                     # delaying for 5 seconds 
+    for i in range(30):                                     # delaying for 3 seconds 
         x.rate.sleep()
     ix,iy=[0,0]
     Goals=[
@@ -352,7 +360,7 @@ try:
     x.steer_angle_1(0.072) # angle at which all doors visible
     x.door_detect() # detect all doors and colors and store in dict
     ##############
-    for j in [[6.21,0,0],[4.21,2.44,3.14-0.28],[4.2,3.80,2*0.78]]:
+    for j in [[6.21,0,0],[4.21,2.44,3.14-0.26],[4.2,3.80,2*0.78]]:
         x.planned_path([[2,1],j[:2]])
         x.steer_angle_1(j[2])
         data = x.camera_view

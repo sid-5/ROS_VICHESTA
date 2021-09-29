@@ -4,38 +4,46 @@ from takshak.srv import door_colour
 from takshak.srv import door_colourRequest
 from takshak.srv import door_colourResponse
 import cv2
+from cv_bridge import CvBridge, CvBridgeError
 import cv2.aruco as aruco
 import numpy as np
 import sys
 import rospy
 answer = {}
 
+def get_contour_center(contour):
+    M = cv2.moments(contour)
+    cx = -1
+    cy = -1
+    if(M['m00']!=0):
+      cx = int(M['m10']/M['m00'])
+      cy = int(M['m01']/M['m00'])
+    return cx,cy
 
 def detect_colour(imageFrame):
-	hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
-    #red mask
-    red_lower = np.array([176, 60, 60], np.uint8) #BGR
-    red_upper = np.array([179, 255, 255], np.uint8)
+    hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
+    red_lower = np.array([0, 60, 30], np.uint8)
+    red_upper = np.array([0, 255, 255], np.uint8)
     red_mask = cv2.inRange(hsvFrame, red_lower, red_upper)
 
     #yellow mask
-    yellow_lower = np.array([28, 60, 60], np.uint8)
-    yellow_upper = np.array([30, 255, 255], np.uint8)
+    yellow_lower = np.array([26, 60, 40], np.uint8)
+    yellow_upper = np.array([28, 255, 255], np.uint8)
     yellow_mask = cv2.inRange(hsvFrame, yellow_lower, yellow_upper)
 
     #blue mask
-    blue_lower = np.array([100, 60, 60], np.uint8)
+    blue_lower = np.array([102, 60, 30], np.uint8)
     blue_upper = np.array([103, 255, 255], np.uint8)
     blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
 
     #green mask
-    green_lower = np.array([60, 60, 60], np.uint8)
-    green_upper = np.array([65, 255, 255], np.uint8)
+    green_lower = np.array([47, 60, 30], np.uint8)
+    green_upper = np.array([50, 255, 255], np.uint8)
     green_mask = cv2.inRange(hsvFrame, green_lower, green_upper)
-              
+            
     #purple mask
-    purple_lower = np.array([146, 60, 60], np.uint8)
-    purple_upper = np.array([148, 255, 255], np.uint8)
+    purple_lower = np.array([139, 40, 25], np.uint8)
+    purple_upper = np.array([140, 255, 255], np.uint8)
     purple_mask = cv2.inRange(hsvFrame, purple_lower, purple_upper)
 
 
@@ -44,15 +52,15 @@ def detect_colour(imageFrame):
     # between imageFrame and mask determines
     # to detect only that particular color
     kernal = np.ones((7, 7), "uint8")
-      
+
     # For red color
     red_mask = cv2.dilate(red_mask, kernal)
     #res_red = cv2.bitwise_and(imageFrame, imageFrame, mask = red_mask)
-      
+
     # For green color
     green_mask = cv2.dilate(green_mask, kernal)
     #res_green = cv2.bitwise_and(imageFrame, imageFrame,mask = green_mask)
-      
+
     # For blue color
     blue_mask = cv2.dilate(blue_mask, kernal)
     #res_blue = cv2.bitwise_and(imageFrame, imageFrame,mask = blue_mask)
@@ -62,9 +70,9 @@ def detect_colour(imageFrame):
 
     # For purple color
     purple_mask = cv2.dilate(purple_mask, kernal)
-    
 
-    
+
+
     # Creating contour to track red color
     _, contours, hierarchy = cv2.findContours(red_mask,
                                            cv2.RETR_TREE,
@@ -79,7 +87,7 @@ def detect_colour(imageFrame):
           answer[cx] = "Red"
           rospy.loginfo("Returning red")
              
-  
+
     # Creating contour to track green color
     _, contours, hierarchy = cv2.findContours(green_mask,
                                            cv2.RETR_TREE,
@@ -99,7 +107,7 @@ def detect_colour(imageFrame):
             answer[cx] = "Green"
             rospy.loginfo("Returning greeen")
             
-  
+
     # Creating contour to track blue color
     _, contours, hierarchy = cv2.findContours(blue_mask,
                                            cv2.RETR_TREE,
@@ -162,13 +170,15 @@ def detect_colour(imageFrame):
     cv2.imshow("door_colours", imageFrame)      
     cv2.waitKey(5000)
     cv2.destroyAllWindows()
-	return "colour"
+    return "colour"
 
 
 def handle_door_color(req):
     pos = []
     color = []
+    bridge=CvBridge()
     img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
+    detect_colour(img)
     cv2.imwrite("door.png", img)
     colour = door_colourResponse()
     for cx in answer:
@@ -176,6 +186,7 @@ def handle_door_color(req):
         color.append(answer[cx])
     colour.cx = pos
     colour.color = color
+    print(pos,color)
     return colour
 
 
