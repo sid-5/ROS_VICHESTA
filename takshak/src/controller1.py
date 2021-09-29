@@ -53,6 +53,7 @@ class LandRover:
         self.occupancy_grid_subscriber=rospy.Subscriber("/map",OccupancyGrid,self.og_callback)  # Setting up Subscriber to call self.og_callback when message of type OccupancyGrid is received
         self.ball_counter=0
         self.aruco_and_color = dict()
+        self.door_color_ids=dict()
         self.camera_view=Image()
         self.camera_view_subscriber=rospy.Subscriber('/camera/color/image_raw', Image, self.camera_view_callback)
     
@@ -261,6 +262,13 @@ class LandRover:
         self.stop()
         rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
+    ##############
+    def door_detect(self):
+        # just like aruco but yaha x ke basis pe
+        # when we enter - purple purple ...... red red
+        pass
+    ##############
+
     def ball_detect(self, img):
         rospy.loginfo("called ball_detect")
         rospy.wait_for_service('ball')
@@ -284,7 +292,19 @@ class LandRover:
         except Exception as e:
             rospy.loginfo(e)
 
-
+    ##############
+    def find_door_and_move(self):
+        door_x=9.019
+        door_ys=[-2.1,0.4,2.9,5.4,7.9] # rightmost red tha, leftmost purple
+        # door_ys=[(-3.1,-1.1),(-0.6,1.4),(1.9,3.9),(4.4,6.4),(6.9,8.9)]
+        door_color=self.aruco_and_color[self.ball_counter%5]
+        xd1,yd1=7,door_ys[self.door_color_ids[door_color]]
+        xd2,yd2=11.5,yd1
+        self.planned_path([[self.x,self.y],[xd1,yd1]])
+        rospy.loginfo("Entering through "+door_color+" door")
+        self.planned_path([[xd1,yd1],[xd2,yd2]])
+        rospy.loginfo("Journey ends here")
+    ##############
 
 try:
     x=LandRover()
@@ -310,6 +330,11 @@ try:
     i+=1
     x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
                 [Goals[i][0]-ix,Goals[i][1]-iy])
+    x.planned_path([[2,1],[2.59,1.10]])
+    ##############
+    x.steer_angle_1(0.072) # angle at which all doors visible
+    x.door_detect() # detect all doors and colors and store in dict
+    ##############
     for j in [[6.21,0,0],[4.21,2.44,3.14-0.28],[4.2,3.80,2*0.78]]:
         x.planned_path([[2,1],j[:2]])
         x.steer_angle_1(j[2])
@@ -319,6 +344,7 @@ try:
         x.ball_detect(data)
         rospy.loginfo(x.ball_counter)
     # doors detect and move to 11,Y
+    x.find_door_and_move()
     rospy.loginfo("Reached all Waypoints")
 except Exception as e:
     print("Error: ",e)
