@@ -22,9 +22,12 @@
 > - Now after the detection of the color the robot needs to navigate to the room which has `colored doors` to the finish line. 
 >
 > > **Colored Doors**
-> <img src="../images/image3.jpeg" style="vertical-align:middlepadding:25px 25px 25px 25px" width="700">
+> <img src="../images/image3.jpeg" style="vertical-align:middle padding:25px 25px 25px 25px" width="700">
 >
-> - Next task of the bot is to detect the `color C` of the door. Whichever door has the same color, the bot needs to pass through that particular door and cross the finish line to accomplish the task. 
+> - When the bot enters the room of doors it scans the color of the doors and the center point also. So we store them as list in the program.
+>
+> - The center points are in association with the Y co-ordinate in gazebo. That means after detection of the doors and their respective color the computation of the center point is made and stored. And hence we move on to the ball detection in zone 3.
+>
+> - After the total number of ball detection is done with the computation too, the bot needs to pass through that particular door with `color C` and cross the finish line to accomplish the task.
 > 
 > - After doing so the task will get over.
-
