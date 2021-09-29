@@ -59,7 +59,7 @@ The arena designed in the package is as follows :
 
 ### **Reference Table**
 
-| Workflow Part 1  	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md)    	|
-|------------------	|-------------------------------------------------------------------------------------	|
-| Workflow Part 2  	| [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow2.md)    	|
+|  Workflow Part 1 	|   [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md)  	|
+|:----------------:	|:-----------------------------------------------------------------------------------:	|
+|  Workflow Part 2 	|   [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow2.md)  	|
 | A-Star Algorithm 	| [A-Star Analysis](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/a-star.md) 	|
