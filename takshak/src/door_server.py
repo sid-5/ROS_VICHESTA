@@ -66,7 +66,7 @@ def detect_colour(imageFrame):
 
     
     # Creating contour to track red color
-    contours, hierarchy = cv2.findContours(red_mask,
+    _, contours, hierarchy = cv2.findContours(red_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -81,7 +81,7 @@ def detect_colour(imageFrame):
              
   
     # Creating contour to track green color
-    contours, hierarchy = cv2.findContours(green_mask,
+    _, contours, hierarchy = cv2.findContours(green_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -101,7 +101,7 @@ def detect_colour(imageFrame):
             
   
     # Creating contour to track blue color
-    contours, hierarchy = cv2.findContours(blue_mask,
+    _, contours, hierarchy = cv2.findContours(blue_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -121,7 +121,7 @@ def detect_colour(imageFrame):
           
 
     # Creating contour to track yellow color
-    contours, hierarchy = cv2.findContours(yellow_mask,
+    _, contours, hierarchy = cv2.findContours(yellow_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -141,7 +141,7 @@ def detect_colour(imageFrame):
             
 
     # Creating contour to track purple color
-    contours, hierarchy = cv2.findContours(purple_mask,
+    _, contours, hierarchy = cv2.findContours(purple_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -158,7 +158,10 @@ def detect_colour(imageFrame):
                         1.0, (255, 0, 0))
             answer[cx] = "Purple" 
             rospy.loginfo("Returning purple")
-    rospy.loginfo(answer)        
+    rospy.loginfo(answer)  
+    cv2.imshow("door_colours", imageFrame)      
+    cv2.waitKey(5000)
+    cv2.destroyAllWindows()
 	return "colour"
 
 
@@ -183,4 +186,3 @@ def detect_door_colour():
     
 if __name__ == "__main__":
     detect_door_colour()
-    cv2.destroyAllWindows()

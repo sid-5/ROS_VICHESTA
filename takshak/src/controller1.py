@@ -14,6 +14,9 @@ from cv_bridge import CvBridge, CvBridgeError
 from takshak.srv import colour_aruco
 from takshak.srv import colour_arucoRequest
 from takshak.srv import colour_arucoResponse
+from takshak.srv import door_colour
+from takshak.srv import door_colourRequest
+from takshak.srv import door_colourResponse
 
 
 class Cell:
@@ -266,7 +269,21 @@ class LandRover:
     def door_detect(self):
         # just like aruco but yaha x ke basis pe
         # when we enter - purple purple ...... red red
-        pass
+        data = self.camera_view
+        bridge = CvBridge()
+        img = bridge.imgmsg_to_cv2(data, "bgr8")
+        rospy.loginfo("called door_detect")
+        rospy.wait_for_service('door_colour')
+        try:
+            door = rospy.ServiceProxy('door_colour', door_colour)
+            res = door(img)
+            x_pos = res.cx
+            color = res.color
+            for i in range(len(x_pos)):
+                self.door_color_ids[x_pos[i]] = color[i]
+            rospy.loginfo(self.door_color_ids)
+        except Exception as e:
+            rospy.loginfo(e)
     ##############
 
     def ball_detect(self, img):
@@ -281,7 +298,7 @@ class LandRover:
 
     def aruco_m_c_detect(self,img):
         rospy.loginfo("aruco doondte chalo")
-        rospy.wait_for_service('ball')
+        rospy.wait_for_service('aruco_color')
         try:
             colour_a = rospy.ServiceProxy('aruco_color', colour_aruco)
             res = colour_a(img)
