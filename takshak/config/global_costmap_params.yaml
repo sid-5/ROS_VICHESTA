@@ -1,8 +1,8 @@
 global_costmap:
   global_frame: map
   robot_base_frame: husky_robot_model__base_link
-  update_frequency: 2.0 #before: 5.0
-  publish_frequency: 1.0 #before 0.5
+  update_frequency: 3.0 #before: 5.0
+  publish_frequency: 0.5 #before 0.5
   static_map: true
   transform_tolerance: 0.2 #0.4 #0.2
   cost_scaling_factor: 0.7

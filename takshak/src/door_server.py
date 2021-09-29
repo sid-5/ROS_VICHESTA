@@ -8,9 +8,10 @@ import cv2.aruco as aruco
 import numpy as np
 import sys
 import rospy
+answer = {}
 
 
-def detect_colour(img):
+def detect_colour(imageFrame):
 	hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
     #red mask
     red_lower = np.array([176, 60, 60], np.uint8) #BGR
@@ -75,9 +76,9 @@ def detect_colour(img):
           x, y, w, h = cv2.boundingRect(contour)
           imageFrame = cv2.rectangle(imageFrame, (x, y),(x + w, y + h),(0, 0, 255), 2)
           cv2.putText(imageFrame, "Red Colour", (cx, cy),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
-          answer[key] = "Red"
+          answer[cx] = "Red"
           rospy.loginfo("Returning red")
-          return "Red"    
+             
   
     # Creating contour to track green color
     contours, hierarchy = cv2.findContours(green_mask,
@@ -95,9 +96,9 @@ def detect_colour(img):
             cv2.putText(imageFrame, "Green Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))
-            answer[key] = "Green"
+            answer[cx] = "Green"
             rospy.loginfo("Returning greeen")
-            return "Green"
+            
   
     # Creating contour to track blue color
     contours, hierarchy = cv2.findContours(blue_mask,
@@ -115,9 +116,9 @@ def detect_colour(img):
             cv2.putText(imageFrame, "Blue Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
-            answer[key] = "Blue"
+            answer[cx] = "Blue"
             rospy.loginfo("Returning blue")
-            return "Blue"
+          
 
     # Creating contour to track yellow color
     contours, hierarchy = cv2.findContours(yellow_mask,
@@ -135,9 +136,9 @@ def detect_colour(img):
             cv2.putText(imageFrame, "Yellow Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
-            answer[key] = "Yellow"
+            answer[cx] = "Yellow"
             rospy.loginfo("Returning Yellow")
-            return "Yellow"
+            
 
     # Creating contour to track purple color
     contours, hierarchy = cv2.findContours(purple_mask,
@@ -155,18 +156,24 @@ def detect_colour(img):
             cv2.putText(imageFrame, "purple Colour", (cx, cy),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
-            answer[key] = "Purple" 
+            answer[cx] = "Purple" 
             rospy.loginfo("Returning purple")
-            return "Purple"
+    rospy.loginfo(answer)        
 	return "colour"
 
 
 def handle_door_color(req):
-	colour = ""
+    pos = []
+    color = []
     img = bridge.imgmsg_to_cv2(req.image, "bgr8") #desired_encoding='passthrough'
     cv2.imwrite("door.png", img)
-    colour = detect_colour()
-    return door_colourResponse(colour)
+    colour = door_colourResponse()
+    for cx in answer:
+        pos.append(cx)
+        color.append(answer[cx])
+    colour.cx = pos
+    colour.color = color
+    return colour
 
 
 def detect_door_colour():

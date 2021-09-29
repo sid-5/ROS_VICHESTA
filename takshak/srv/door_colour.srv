@@ -1,4 +1,4 @@
 sensor_msgs/Image image
 ---
-string color
-
+int32[] cx
+string[] color

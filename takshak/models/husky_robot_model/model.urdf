@@ -231,7 +231,7 @@
     <collision name="camera_link_collision">
       <origin rpy="1.57079  0       0" xyz="0  0  0"/>
       <geometry>
-        <cylinder length="0.045" radius="0.014"/>
+        <cylinder length="0.045" radius="0.014"/> #0.045
       </geometry>
     </collision>
     <visual name="camera_link_visual">
