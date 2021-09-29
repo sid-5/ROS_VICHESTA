@@ -12,15 +12,12 @@
 > <img src="../images/image6.jpeg" style="vertical-align:middle; > padding:25px 25px 25px 25px" width="700">
 > 
 > - The bot will navigate in the room and detection and reading of  that `aruco` markers will take place. 
-> After detection of the ID's of the `aruco` markers now the bot will locate all the balls in zone 3 and add  them to the total number of balls found in zone 1 and zone 2.
+> After detection of the ID's of the `aruco` markers now the bot will locate all the balls in zone 3 and add them to the total number of balls found in zone 1 and zone 2.
 > - Now as per the problem statement let the number of balls be `X`. Now we will compute the remainder of `X % 5`. Let's take that as `Y`.
->
-> - Now after the computation, our bot will navigate to the room of  the map where the `aruco` marker are placed.
 > 
+> - As mentioned we have to already scanned the `aruco` markers. Now we need to search for the `aruco` marker with `ID = Y` in our scanned array of ID's.
 > 
-> - As mentioned we have to find the `aruco` marker with `ID = Y`.
-> 
-> - After detection of that `aruco` marker, we need to detect the  color of the box which is kept on the top of that particular  `aruco` marker. Let the color be `C`.
+> - After detection of that `aruco` marker, we need to find the  color of the box which is kept on the top of that particular  `aruco` marker which is already scanned by the bot before moving on to the ball detection in zone 3. Let the color be `C`.
 >
 > - Now after the detection of the color the the robot needs to  navigate to the rooms which has `colored doors` to the finish line. 
 >
