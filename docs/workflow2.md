@@ -12,7 +12,7 @@
 > <img src="../images/image6.jpeg" style="vertical-align:middle; > padding:25px 25px 25px 25px" width="700">
 > 
 > - The bot will navigate in the room and detection and reading of  that `aruco` markers will take place. 
-> After detection of the ID on ID's of the `aruco` markers now the bot will locate all the balls in zone 3 and add  them to the total number of balls found in zone 1 and zone 2.
+> After detection of the ID's of the `aruco` markers now the bot will locate all the balls in zone 3 and add  them to the total number of balls found in zone 1 and zone 2.
 > - Now as per the problem statement let the number of balls be `X`. Now we will compute the remainder of `X % 5`. Let's take that as `Y`.
 >
 > - Now after the computation, our bot will navigate to the room of  the map where the `aruco` marker are placed.
