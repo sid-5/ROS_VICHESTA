@@ -238,7 +238,6 @@ class LandRover:
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8")
                 self.aruco_m_c_detect(data)
-            else:
                 rospy.loginfo(self.aruco_and_color)
             prev_x,prev_y=self.x,self.y
             while self.eulerian_distance(self.x,self.y,x,y)>0.1:
@@ -254,7 +253,6 @@ class LandRover:
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8")
                 self.aruco_m_c_detect(data)
-            else:
                 rospy.loginfo(self.aruco_and_color)
             if [x,y] in [[5.5,-4.5],[-0.5,-8]]:
                 data = self.camera_view
@@ -360,7 +358,10 @@ try:
     x.steer_angle_1(0.072) # angle at which all doors visible
     x.door_detect() # detect all doors and colors and store in dict
     ##############
-    for j in [[6.21,0,0],[4.21,2.44,3.14-0.26],[4.2,3.80,2*0.78]]:
+    j=[6.21,0,0]
+    x.planned_path([[2,1],j[:2]])
+    x.steer_angle_1(j[2])
+    for j in [[4.21,2.44,3.14-0.26],[4.2,3.80,2*0.78]]:
         x.planned_path([[2,1],j[:2]])
         x.steer_angle_1(j[2])
         data = x.camera_view
