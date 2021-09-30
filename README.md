@@ -90,5 +90,5 @@ sudo apt install gazebo9 libgazebo9-dev
   ```
 <div class="row">
 <img src="images/pointer.gif" style="vertical-align:bottom" width="30">
-Visit <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/problem_statement.md">here</a> for Problem Statement and its description
+Visit <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/problem_statement.md">here</a> for Problem Statement and its solution's description
 </div>
