@@ -64,7 +64,7 @@
   <node pkg="takshak" name="aruco_color_server" type="aruco_color_detection_server.py" output="screen"/>
 
    <include file="$(find takshak)/launch/nav.launch" />
-  <node pkg="takshak" name="controller1" type="controller1.py" output="screen"> 
+  <node pkg="takshak" name="controller" type="controller.py" output="screen"> 
   </node>
 
 <!-- cv aruco node   

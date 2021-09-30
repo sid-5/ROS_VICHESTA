@@ -44,7 +44,7 @@ class LandRover:
         [-3.0,-7.0]
     ]
     def __init__(self):
-        rospy.init_node('controller1', anonymous=True)                              # Creating a node
+        rospy.init_node('controller', anonymous=True)                              # Creating a node
         self.rate = rospy.Rate(10)                              # Rate of 10Hz
         self.velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)     # Setting up Publisher that will publish to the topic '/cmd_vel'
         self.vel_msg = Twist()                                  # Object of type Twist to set values for publishing
