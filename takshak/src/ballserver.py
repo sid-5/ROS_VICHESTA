@@ -59,7 +59,7 @@ def detect_ball(data):
           cv2.putText(img, "ball", (cx, cy),
                       cv2.FONT_HERSHEY_SIMPLEX, 
                       1.0, (0, 255, 0))
-          count+=max(math.ceil(w/h),math.ceil(h/w)) # when balls overlap
+          count+=math.ceil(w/h) # when balls overlap
     cv2.imshow("Ball Detection",img)
     cv2.waitKey(3000)
     cv2.destroyAllWindows()
