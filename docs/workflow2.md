@@ -6,6 +6,9 @@
 
 ### **Explanation**
 
+> > **Ball Detection**
+> > 
+> > ![Balldetection](https://user-images.githubusercontent.com/62329500/135494272-5d0162da-6290-4787-97f4-6bff5a6d2da6.png)
 > - Now as the bot has counted the number of balls in zone 1 and zone 2 so the first half of the problem is done.
 > 
 > > **Aruco Markers**
