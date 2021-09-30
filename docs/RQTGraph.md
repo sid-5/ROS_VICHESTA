@@ -1,4 +1,4 @@
-# RQT Node Graph
+# RQT Graph
 > <img src="../images/rosgraph.png" style="vertical-align:middle; padding:25px 25px 25px 25px" width="1000">
 # Explanation:
 ## Nodes we created:
