@@ -76,3 +76,5 @@ The arena designed in the package is as follows :
 |  Workflow Part 2 	|      [File link](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow2.md)      	|
 | A-Star Algorithm 	|     [A-Star Analysis](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/a-star.md)    	|
 |     RQT Graph    	| [RQT Node Description](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/RQTGraph.md) 	|
+
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
