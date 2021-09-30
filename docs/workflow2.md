@@ -22,7 +22,8 @@
 > - Now after the detection of the color the robot needs to navigate to the room which has `colored doors` to the finish line. 
 >
 > > **Colored Doors**
-> <img src="../images/image3.jpeg" style="vertical-align:middle padding:25px 25px 25px 25px" width="700">
+> <img src="../images/image3.jpeg" style="vertical-align:middle padding:25px 25px 25px 25px" width="700"> ![door](https://user-images.githubusercontent.com/62329500/135492891-c21565d9-4a12-49a9-96c0-11df24befd1b.png)
+
 >
 > - When the bot enters the room of doors it scans the color of the doors and the center point also. So we store them as list in the program.
 >
