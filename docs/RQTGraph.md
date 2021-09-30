@@ -8,7 +8,7 @@
 > - When the path reaches certain way-points in the mao this node sends the information form the suscribed node to the servers for performing ball detection(explained <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md">here</a>), aruco id and box colour detection(explained <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md">here</a>) and door colour detection(explained <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/workflow1.md">here</a>)
 
 ## Servive files we created:
-> Ball_server
+> Detect_ball_server
 > - Using openCV we detect countours having the specific colour of the ball and count the number of balls in a specific image
 > - This server receives a message of type sensor_msgs/Image and returns an integer
 > 
