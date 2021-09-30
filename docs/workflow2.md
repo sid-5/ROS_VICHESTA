@@ -12,7 +12,8 @@
 > - Now as the bot has counted the number of balls in zone 1 and zone 2 so the first half of the problem is done.
 > 
 > > **Aruco Markers**
-> <img src="../images/image6.jpeg" style="vertical-align:middle; > padding:25px 25px 25px 25px" width="700">
+> > 
+> <img src="https://user-images.githubusercontent.com/62329500/135494917-da430bd2-b5e9-4d75-ada4-4e94fa02bc06.png" style="vertical-align:middle; > padding:25px 25px 25px 25px" width="700">
 > 
 > - The bot will navigate in the room and detection and reading of that `aruco` markers will take place. 
 > After detection of the ID's of the `aruco` markers now the bot will locate all the balls in zone 3 and add them to the total number of balls found in zone 1 and zone 2.
