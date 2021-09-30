@@ -6,7 +6,7 @@
 
 ### **Explanation**
 
-> - The bot starts at the start position assigned to it. It checks the obstruction and moves to the next room.
+> - The bot begins the journey from the start position assigned to it. It checks the obstruction and moves to the next room.
 
 > - As the bot enters the new room, it counts the number of balls kept directly in front of it and stores the number. The bot then starts traveling forward avoiding the obstacle to the 2nd room.
 
