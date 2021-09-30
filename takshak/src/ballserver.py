@@ -3,7 +3,7 @@
 from takshak.srv import ball
 from takshak.srv import ballRequest
 from takshak.srv import ballResponse
-import cv2
+import cv2,math
 import numpy as np
 import rospy
 from sensor_msgs.msg import Image
@@ -49,7 +49,6 @@ def detect_ball(data):
                                                cv2.CHAIN_APPROX_SIMPLE)
     output = cv2.drawContours(res_ball, contours, -1, (0, 0, 255), 3)
     for pic, contour in enumerate(contours):
-      count += 1
       area = cv2.contourArea(contour)
       cx, cy = get_contour_center(contour)
       if(area > 100):
@@ -60,6 +59,7 @@ def detect_ball(data):
           cv2.putText(img, "ball", (cx, cy),
                       cv2.FONT_HERSHEY_SIMPLEX, 
                       1.0, (0, 255, 0))
+          count+=max(math.ceil(w/h),math.ceil(h/w)) # when balls overlap
     cv2.imshow("Ball Detection",img)
     cv2.waitKey(3000)
     cv2.destroyAllWindows()
