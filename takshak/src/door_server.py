@@ -85,7 +85,7 @@ def detect_colour(imageFrame):
           imageFrame = cv2.rectangle(imageFrame, (x, y),(x + w, y + h),(0, 0, 255), 2)
           cv2.putText(imageFrame, "Red Colour", (cx, cy),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
           answer[cx] = "Red"
-          rospy.loginfo("Returning red")
+          # rospy.loginfo("Returning red")
              
 
     # Creating contour to track green color
@@ -105,7 +105,7 @@ def detect_colour(imageFrame):
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))
             answer[cx] = "Green"
-            rospy.loginfo("Returning greeen")
+            # rospy.loginfo("Returning greeen")
             
 
     # Creating contour to track blue color
@@ -125,7 +125,7 @@ def detect_colour(imageFrame):
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
             answer[cx] = "Blue"
-            rospy.loginfo("Returning blue")
+            # rospy.loginfo("Returning blue")
           
 
     # Creating contour to track yellow color
@@ -145,7 +145,7 @@ def detect_colour(imageFrame):
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
             answer[cx] = "Yellow"
-            rospy.loginfo("Returning Yellow")
+            # rospy.loginfo("Returning Yellow")
             
 
     # Creating contour to track purple color
@@ -165,10 +165,10 @@ def detect_colour(imageFrame):
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
             answer[cx] = "Purple" 
-            rospy.loginfo("Returning purple")
+            # rospy.loginfo("Returning purple")
     rospy.loginfo(answer)  
     cv2.imshow("door_colours", imageFrame)      
-    cv2.waitKey(5000)
+    cv2.waitKey(1000)
     cv2.destroyAllWindows()
     return "colour"
 
@@ -186,7 +186,7 @@ def handle_door_color(req):
         color.append(answer[cx])
     colour.cx = pos
     colour.color = color
-    print(pos,color)
+    # print(pos,color)
     return colour
 
 

@@ -31,7 +31,7 @@ def detect_ball(data):
     cv2.putText(img, "point", (240,240),
                   cv2.FONT_HERSHEY_SIMPLEX, 
                   1.0, (0, 255, 0))
-    rospy.loginfo(hsv)
+    # rospy.loginfo(hsv)
     (rows,cols,channels) = img.shape
     width,height = 0,0
     #Balls mask
@@ -59,11 +59,14 @@ def detect_ball(data):
           cv2.putText(img, "ball", (cx, cy),
                       cv2.FONT_HERSHEY_SIMPLEX, 
                       1.0, (0, 255, 0))
-          count+=math.ceil(w/h) # when balls overlap
+          # print(w,h,math.ceil((w+0.0)/(h+0.0)))
+          # count+=math.ceil((w+0.0)/(h+0.0)) # when balls overlap
+          count+=1
     cv2.imshow("Ball Detection",img)
-    cv2.waitKey(3000)
+    cv2.imwrite("Balldetection.png",img)
+    cv2.waitKey(1000)
     cv2.destroyAllWindows()
-    rospy.loginfo("Returning {}".format(count))
+    rospy.loginfo("Returning count of balls: {}".format(count))
     return ballResponse(count)
 
 def detect_ball_server():

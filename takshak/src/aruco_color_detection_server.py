@@ -157,18 +157,18 @@ def handle_aruco_color(req):
             width = (bbox.item(0,0,0)+bbox.item(0,1,0))/2
             height = (bbox.item(0,0,1)+bbox.item(0,2,1))/2
             cv2.putText(img, "id", (10,10),cv2.FONT_HERSHEY_SIMPLEX, 1.0,(0, 0, 255))
-            print("""mean width pos {} 
-                              mean height pos {}
-                              has id{}""".format(width,height,id.item(0)))
-            print(dictt)
-            print(answer)
+            # print("""mean width pos {} 
+            #                   mean height pos {}
+            #                   has id{}""".format(width,height,id.item(0)))
+            # print(dictt)
+            # print(answer)
         for key, value in dictt.items():
             colour_detect(img, value[0], value[1],height, key)
     for key in answer:
         aruco_ids.append(key)
         color_ids.append(answer[key])
     cv2.imshow("aru",img)
-    cv2.waitKey(2000)
+    cv2.waitKey(1000)
     cv2.destroyAllWindows()
     response = colour_arucoResponse()
     response.ids = aruco_ids

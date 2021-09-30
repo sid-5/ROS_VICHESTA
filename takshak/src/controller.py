@@ -228,17 +228,17 @@ class LandRover:
 
     def planned_path(self,arr):
         ''' Implements the motion towards goal with provided optimum points'''
-        print(arr)
+        # print(arr)
         for [x,y] in arr[1:len(arr)]:
-            print(self.x,self.y,self.yaw,x,y)
+            # print(self.x,self.y,self.yaw,x,y)
             self.steer_angle(x,y)
-            print("steered towards: ",x,y)
-            if x in [-9,-9.5,-10] and y in [-3.5,-3,-2.5,-2,-1.5] and len(self.aruco_and_color)!=5:
+            # print("steered towards: ",x,y)
+            if -10<=x<=-9 and -3.5<=y<=-1.5 and [x,y]!=[-10,-3.5] and len(self.aruco_and_color)!=5:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8")
                 self.aruco_m_c_detect(data)
-                rospy.loginfo(self.aruco_and_color)
+                # rospy.loginfo(self.aruco_and_color)
             prev_x,prev_y=self.x,self.y
             while self.eulerian_distance(self.x,self.y,x,y)>0.1:
                 if self.eulerian_distance(self.x,self.y,x,y)>0.5 and self.eulerian_distance(self.x,self.y,prev_x,prev_y) >1.0:
@@ -248,20 +248,20 @@ class LandRover:
                 else:
                     self.go_ahead(0.5)
             self.stop()
-            if x in [-9,-9.5,-10] and y in [-3.5,-3,-2.5,-2,-1.5] and len(self.aruco_and_color)!=5:
+            if -10<=x<=-9 and -3.5<=y<=-1.5 and [x,y]!=[-10,-3.5] and len(self.aruco_and_color)!=5:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8")
                 self.aruco_m_c_detect(data)
-                rospy.loginfo(self.aruco_and_color)
+                # rospy.loginfo(self.aruco_and_color)
             if [x,y] in [[5.5,-4.5],[-0.5,-8]]:
                 data = self.camera_view
                 bridge = CvBridge()
                 img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
                 self.ball_detect(data)
-                rospy.loginfo(self.ball_counter)
+                # rospy.loginfo(self.ball_counter)
         self.stop()
-        rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
+        # rospy.loginfo("Reached: x:"+str(round(self.x,2))+" y:"+str(round(self.y,2)))
 
     ##############
     def door_detect(self):
@@ -270,7 +270,7 @@ class LandRover:
         data = self.camera_view
         bridge = CvBridge()
         img = bridge.imgmsg_to_cv2(data, "bgr8")
-        rospy.loginfo("called door_detect")
+        # rospy.loginfo("called door_detect")
         rospy.wait_for_service('door_colour')
         door_ys=[-2.1, 0.4, 2.9, 5.4, 7.9] # rightmost red tha, leftmost purple
         door_ys=door_ys[::-1]
@@ -283,16 +283,17 @@ class LandRover:
             for i in range(len(x_pos)):
                 temp_tuples.append((x_pos[i],color[i]))
             temp_tuples.sort()
-            rospy.loginfo(temp_tuples)
+            # rospy.loginfo(temp_tuples)
             for i in range(5):
                 self.door_color_ids[temp_tuples[2*i][1]]=door_ys[i]
+            rospy.loginfo("Door color and respective y co-ordinates are: ")
             rospy.loginfo(self.door_color_ids)
         except Exception as e:
             rospy.loginfo(e)
     ##############
 
     def ball_detect(self, img):
-        rospy.loginfo("called ball_detect")
+        # rospy.loginfo("called ball_detect")
         rospy.wait_for_service('ball')
         try:
             ball_c = rospy.ServiceProxy('ball', ball)
@@ -302,7 +303,7 @@ class LandRover:
             rospy.loginfo(e)
 
     def aruco_m_c_detect(self,img):
-        rospy.loginfo("aruco doondte chalo")
+        # rospy.loginfo("aruco doondte chalo")
         rospy.wait_for_service('aruco_color')
         try:
             colour_a = rospy.ServiceProxy('aruco_color', colour_aruco)
@@ -311,6 +312,8 @@ class LandRover:
             colors = res.colors
             for i in range(len(ids)):
                 self.aruco_and_color[ids[i]] = colors[i]
+            rospy.loginfo("Aruco ids and corresponding color: ")
+            rospy.loginfo(self.aruco_and_color)
         except Exception as e:
             rospy.loginfo(e)
 
@@ -331,7 +334,7 @@ class LandRover:
 
 try:
     x=LandRover()
-    for i in range(30):                                     # delaying for 3 seconds 
+    for i in range(10):                                     # delaying for 1 seconds 
         x.rate.sleep()
     ix,iy=[0,0]
     Goals=[
@@ -347,6 +350,7 @@ try:
         # [-7.25,8], # before leftmost door
         # [11.5,2.5] # final point
     ]        # Task 2 waypoints (provide nearest 0.25 multiple and not exact value)
+    rospy.loginfo("Starting the journey")
     i=0
     x.A_star_nav(Cell(Goals[i+1][0]-ix,Goals[i+1][1]-iy),
                 [Goals[i][0]-ix,Goals[i][1]-iy])
@@ -361,17 +365,19 @@ try:
     j=[6.21,0,0]
     x.planned_path([[2,1],j[:2]])
     x.steer_angle_1(j[2])
-    for j in [[4.21,2.44,3.14-0.26],[4.2,3.80,2*0.78]]:
+    for j in [[4.21,2.44,3.14-0.25],[4.2,3.80,2*0.78]]:
         x.planned_path([[2,1],j[:2]])
         x.steer_angle_1(j[2])
+        x.stop()
         data = x.camera_view
         bridge = CvBridge()
         img = bridge.imgmsg_to_cv2(data, "bgr8") #desired_encoding='passthrough'
         x.ball_detect(data)
-        rospy.loginfo(x.ball_counter)
+    rospy.loginfo("Total count of balls: {}".format(x.ball_counter))
+    rospy.loginfo("Y=X%5 gives {}".format(x.ball_counter%5))
     # doors detect and move to 11,Y
     x.find_door_and_move()
-    rospy.loginfo("Reached all Waypoints")
+    # rospy.loginfo("Reached all Waypoints")
 except Exception as e:
     print("Error: ",e)
 
