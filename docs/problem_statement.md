@@ -78,4 +78,4 @@ The arena designed in the package is as follows :
 |     RQT Graph    	| [RQT Node Description](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/RQTGraph.md) 	|
 
 ### **Youtube video link of solution**
-> [![Team_Lord_of_ROS](https://img.youtube.com/channel/UC7Q0ztyfONuVZy3p5FvmM0g.jpg)](https://youtube.com/channel/UC7Q0ztyfONuVZy3p5FvmM0g)
+> [![Team_Lord_of_ROS](https://img.https://youtu.be/t50Ctk6Se6Q.jpg)](https://youtu.be/t50Ctk6Se6Q)
