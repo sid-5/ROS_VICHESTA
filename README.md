@@ -88,5 +88,7 @@ sudo apt install gazebo9 libgazebo9-dev
   ```
   roslaunch takshak world1.launch
   ```
-
-[Problem Statement and its description](https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/problem_statement.md)
+<div class="row">
+<img src="images/pointer.gif" style="vertical-align:bottom" width="30">
+Visit <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/problem_statement.md">here</a> for Problem Statement and its description
+</div>
