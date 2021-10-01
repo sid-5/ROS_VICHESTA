@@ -20,6 +20,5 @@
 
 > We have used the A-star algorithm for path planning of the bot's route to complete the task.
 
-# Dheeraj add karde aage
-
-:
+# A-star navigation
+> We are using A-star algorithm to navigate through the map about which you can read <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/a-star.md">here.</a>
