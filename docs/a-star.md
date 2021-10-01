@@ -19,6 +19,7 @@
 >The optimal path would be diagonally upright but due to the black obstacles the robot would have to evaluate other possible paths neighbouring to visited block with the next heuristically shorter path to reach the goal.
 >
 >There are 8 neighbours, added to an array, which would be sorted on total distance from start to goal with that block as an intermediate. An updation is performed on g(n) and f(n) gets affected as well. The array is then used as a queue to get the next best block to visit.
+>
 >Have a visual look at how the algorithm finds the path
 >
 >https://user-images.githubusercontent.com/62329500/133422506-26866080-b5fb-46b3-9601-ec52f603e244.mp4
