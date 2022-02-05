@@ -93,3 +93,13 @@ sudo apt install gazebo9 libgazebo9-dev
 <img src="images/pointer.gif" style="vertical-align:bottom" width="30">
 Visit <a href="https://github.com/sid-5/ROS_VICHESTA/blob/master/docs/problem_statement.md">here</a> for Problem Statement and its solution's description
 </div>
+
+
+
+## Contributors
+
+- [@siddharthgajarmal](https://github.com/sid-5)
+- [@dheerajgonchigar](https://github.com/djdheeraj5701)
+- [@suyashmore](https://github.com/suyash-more)
+- [@tirtheshsohani](https://github.com/Tirthesh271)
+
